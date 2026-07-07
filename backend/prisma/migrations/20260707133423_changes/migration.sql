@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "Expense" ALTER COLUMN "amount" SET DATA TYPE DECIMAL(65,30);
+
+-- AlterTable
+ALTER TABLE "ExpenseSplit" ALTER COLUMN "oweAmount" SET DATA TYPE DECIMAL(65,30);
