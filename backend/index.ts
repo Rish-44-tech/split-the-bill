@@ -22,13 +22,14 @@ app.get('/api/health', (req: Request, res: Response) => {
 });
 
 app.get('/api/groups',async (req:Request,res:Response)=>{
-    const {userId}=req.body;
+    const {userId}=req.query;
+    console.log("reached api!!");
     try{
         const groupsForUser=await prisma.group.findMany({
             where:{
                 members:{
                 some:{
-                    userId:userId
+                    userId:Number(userId)
                 }
                 }
             }
