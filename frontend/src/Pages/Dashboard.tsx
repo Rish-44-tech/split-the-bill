@@ -1,10 +1,27 @@
 import { useOutletContext } from "react-router";
+import { useState,useEffect } from "react";
+import axios from "axios";
 
 export default function Dashboard() {
-  const userDetails: { name: string; email: string } = useOutletContext();
+  const [userDetails,,]: [
+    userDetails: { id: number; name: string; email: string },
+    { id: number; name: string; createdAt: Date }[],
+    () => Promise<void>,
+  ] = useOutletContext();
+
+  const [recAct,setRecAct]=useState([]);
+
+  useEffect(()=>{
+    const getRecAct= async ()=>{
+      const response = await axios.get(`/api/${userDetails.id}/activity?recent=true&filter=all`);
+      setRecAct(response.data);
+    };
+    console.log(recAct);
+    getRecAct();
+  },[userDetails.id]);
   return (
     <>
-      {" "}
+      <title>Dashboard</title>
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-slate-900">Dashboard Summary</h1>
         <p className="text-sm text-slate-500">
@@ -101,45 +118,29 @@ export default function Dashboard() {
             </p>
           </div>
 
-          {/* Timeline List */}
           <div className="flex flex-col gap-4 mt-2 relative before:absolute before:left-[19px] before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-100">
-            {/* Activity Item 1 */}
-            <div className="flex gap-3 relative items-start">
-              <div className="w-10 h-10 rounded-full bg-slate-100 flex-shrink-0 flex items-center justify-center border border-white z-10 text-sm">
-                🛒
-              </div>
-              <div className="flex-1 pt-1">
-                <p className="text-sm text-slate-700">
-                  <span className="font-semibold text-slate-900">
-                    Alex Smith
-                  </span>{" "}
-                  added{" "}
-                  <span className="font-medium text-slate-900">
-                    "Groceries"
-                  </span>
-                </p>
-                <span className="text-xs text-slate-400">
-                  2 hours ago • Apartment Split
-                </span>
-              </div>
-            </div>
 
-            {/* Activity Item 2 */}
-            <div className="flex gap-3 relative items-start">
-              <div className="w-10 h-10 rounded-full bg-slate-100 flex-shrink-0 flex items-center justify-center border border-white z-10 text-sm">
-                ⛽
-              </div>
-              <div className="flex-1 pt-1">
-                <p className="text-sm text-slate-700">
-                  <span className="font-semibold text-slate-900">You</span>{" "}
-                  added{" "}
-                  <span className="font-medium text-slate-900">"Gasoline"</span>
-                </p>
-                <span className="text-xs text-slate-400">
-                  Yesterday • Road Trip
-                </span>
-              </div>
-            </div>
+            {recAct.map((element) => {
+              return (
+                <div className="flex gap-3 relative items-start" key={element.expenseId}>
+                  <div className="w-10 h-10 rounded-full bg-slate-100 flex-shrink-0 flex items-center justify-center border border-white z-10 text-sm">
+                    ⛽
+                  </div>
+                  <div className="flex-1 pt-1">
+                    <p className="text-sm text-slate-700">
+                      <span className="font-semibold text-slate-900">{element.createdBy}</span>{" "}
+                      added{" "}
+                      <span className="font-medium text-slate-900">
+                        {element.description}
+                      </span>
+                    </p>
+                    <span className="text-xs text-slate-400">
+                      {element.createdAt} • {element.group}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

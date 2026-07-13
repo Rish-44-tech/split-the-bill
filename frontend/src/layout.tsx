@@ -5,8 +5,8 @@ import Sidebar from "./Components/Sidebar";
 export default function Layout({
   userDetails,groups,getGroups
 }: {
-  userDetails: { name: string; email: string },
-  groups :{id:number, name: string, createdAt:string}[],
+  userDetails: { id:number; name: string; email: string },
+  groups :{id:number, name: string, createdAt:Date}[],
   getGroups: ()=>Promise<void>
 }) {
   return (

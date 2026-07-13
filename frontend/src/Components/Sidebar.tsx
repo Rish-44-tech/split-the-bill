@@ -3,8 +3,8 @@ import { NavLink } from "react-router";
 export default function Sidebar({
   userDetails, groups
 }: {
-  userDetails: { name: string; email: string };
-  groups: { id: number; name: string; createdAt: string }[];
+  userDetails: { id:number; name: string; email: string };
+  groups: { id: number; name: string; createdAt: Date }[];
 }) {
   return (
     <div className="flex flex-col gap-6 w-64 overflow-hidden p-6 bg-slate-50 border-r border-slate-200 font-sans">
@@ -50,7 +50,7 @@ export default function Sidebar({
         </div>
         <div className="flex flex-col gap-1 px-3 text-sm text-slate-600">
           {groups.map(
-            (group: { id: number; name: string; createdAt: string }) => {
+            (group: { id: number; name: string; createdAt: Date }) => {
               return (
                 <NavLink
                   to={`/group/${group.id}`}
