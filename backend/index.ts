@@ -533,9 +533,6 @@ app.post("/api/groups/:groupId/settlements",async (req:Request,res:Response)=>{
       return res.status(400).json({error:"check body inputs"});
     }
 
-    if(paidById===receivedById){
-      return res.status(400).json({error:"Cannot settle with yourself"});
-    }
     const newSettlement= await prisma.settlement.create({
       data:{
         amount:amnt,
