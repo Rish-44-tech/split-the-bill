@@ -57,9 +57,9 @@ export default function Header({
         <NavLink to="/dashboard" className={navClass}>
           Dashboard
         </NavLink>
-        <NavLink to="/activity" className={navClass}>
+        {/* <NavLink to="/activity" className={navClass}>
           Activity
-        </NavLink>
+        </NavLink> */}
 
         <div className="w-px h-5 bg-[#D8D9CD] mx-2 flex-shrink-0" />
 

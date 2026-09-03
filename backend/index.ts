@@ -12,6 +12,143 @@ import { Decimal } from "@prisma/client/runtime/client";
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+async function getBalanceData(groupId:number){
+  try {
+    const groupDets = await prisma.group.findFirst({
+      where:{
+        id:{
+          equals: Number(groupId)
+        }
+      }
+    });
+
+    if(!groupDets){
+      throw new Error("Group not found.");
+    }
+
+    const groupName = groupDets.name;
+
+    const expensesData = await prisma.expense.findMany({
+      where: {
+        groupId: {
+          equals: Number(groupId),
+        },
+      },
+      include: {
+        splits: true,
+      },
+    });
+
+    const membersData = await prisma.groupMember.findMany({
+      where: {
+        groupId: {
+          equals: Number(groupId),
+        },
+      },
+      include: {
+        user: true,
+      },
+    });
+
+    const setlements = await prisma.settlement.findMany({
+      where:{
+        groupId:{
+          equals:Number(groupId)
+        }
+      }
+    });
+
+    let netAmounts: Record<
+      number,
+      { userId: number; name: string; amount: number }
+    > = {};
+    membersData.forEach((member) => {
+      netAmounts[member.userId] = {
+        userId: member.userId,
+        name: member.user.name,
+        amount: 0,
+      };
+    });
+    expensesData.forEach((expense) => {
+      if (netAmounts[expense.paidById]) {
+        netAmounts[expense.paidById].amount += Number(expense.amount);
+      }
+      expense.splits.forEach((split) => {
+        if (netAmounts[split.userId]) {
+          netAmounts[split.userId].amount -= Number(split.oweAmount);
+        }
+      });
+    });
+    setlements.forEach((settlement)=>{
+      if(netAmounts[settlement.paidById]){
+        netAmounts[settlement.paidById].amount+=Number(settlement.amount);
+      }
+      if(netAmounts[settlement.receivedById]){
+        netAmounts[settlement.receivedById].amount-=Number(settlement.amount);
+      }
+    })
+
+    let oweMoney: Array<{ userId: number; name: string; amount: number }> = [];
+    let getMoney: Array<{ userId: number; name: string; amount: number }> = [];
+
+    Object.values(netAmounts).forEach((record) => {
+      if (record.amount < -0.01) {
+        oweMoney.push({ ...record, amount: Math.abs(record.amount) });
+      } else if (record.amount > 0.01) {
+        getMoney.push({ ...record });
+      }
+    });
+    // console.log(oweMoney);
+    // console.log(getMoney);
+    // console.log(netAmounts);
+    oweMoney.sort((a, b) => b.amount - a.amount);
+    getMoney.sort((a, b) => b.amount - a.amount);
+
+    let balanceData: Array<{
+      userId: number;
+      name: string;
+      oweToId: number;
+      oweTo: string;
+      amount: number;
+      groupName: string 
+    }> = [];
+    let p1 = 0;
+    let p2 = 0;
+
+    while (p1 < oweMoney.length && p2 < getMoney.length) {
+      let payer = oweMoney[p1];
+      let receiver = getMoney[p2];
+
+      let money = Math.min(payer.amount, receiver.amount);
+      balanceData.push({
+        userId: payer.userId,
+        name: payer.name,
+        oweToId: receiver.userId,
+        oweTo: receiver.name,
+        amount: Number(money.toFixed(2)),
+        groupName: groupName
+      });
+
+      payer.amount -= money;
+      receiver.amount -= money;
+
+      if (payer.amount < 0.01) {
+        p1++;
+      }
+      if (receiver.amount < 0.01) {
+        p2++;
+      }
+    }
+
+if (p1 != oweMoney.length || p2 != getMoney.length) {
+  throw new Error("error occured. could not calculate balance");
+}
+    return balanceData;
+  } catch(error:any){
+    throw error;
+  }
+}
+
 app.use(cors());
 app.use(express.json());
 
@@ -212,122 +349,123 @@ app.post("/api/expenses", async (req: Request, res: Response) => {
 });
 
 app.get("/api/groups/:groupId/balance", async (req: Request, res: Response) => {
-  const { groupId } = req.params;
-  try {
-    const expensesData = await prisma.expense.findMany({
-      where: {
-        groupId: {
-          equals: Number(groupId),
-        },
-      },
-      include: {
-        splits: true,
-      },
-    });
+  const { groupId } = (req.params);
+  // try {
+  //   const expensesData = await prisma.expense.findMany({
+  //     where: {
+  //       groupId: {
+  //         equals: Number(groupId),
+  //       },
+  //     },
+  //     include: {
+  //       splits: true,
+  //     },
+  //   });
 
-    const membersData = await prisma.groupMember.findMany({
-      where: {
-        groupId: {
-          equals: Number(groupId),
-        },
-      },
-      include: {
-        user: true,
-      },
-    });
+  //   const membersData = await prisma.groupMember.findMany({
+  //     where: {
+  //       groupId: {
+  //         equals: Number(groupId),
+  //       },
+  //     },
+  //     include: {
+  //       user: true,
+  //     },
+  //   });
 
-    const setlements = await prisma.settlement.findMany({
-      where:{
-        groupId:{
-          equals:Number(groupId)
-        }
-      }
-    });
+  //   const setlements = await prisma.settlement.findMany({
+  //     where:{
+  //       groupId:{
+  //         equals:Number(groupId)
+  //       }
+  //     }
+  //   });
 
-    let netAmounts: Record<
-      number,
-      { userId: number; name: String; amount: number }
-    > = {};
-    membersData.forEach((member) => {
-      netAmounts[member.userId] = {
-        userId: member.userId,
-        name: member.user.name,
-        amount: 0,
-      };
-    });
-    expensesData.forEach((expense) => {
-      if (netAmounts[expense.paidById]) {
-        netAmounts[expense.paidById].amount += Number(expense.amount);
-      }
-      expense.splits.forEach((split) => {
-        if (netAmounts[split.userId]) {
-          netAmounts[split.userId].amount -= Number(split.oweAmount);
-        }
-      });
-    });
-    setlements.forEach((settlement)=>{
-      if(netAmounts[settlement.paidById]){
-        netAmounts[settlement.paidById].amount+=Number(settlement.amount);
-      }
-      if(netAmounts[settlement.receivedById]){
-        netAmounts[settlement.receivedById].amount-=Number(settlement.amount);
-      }
-    })
+  //   let netAmounts: Record<
+  //     number,
+  //     { userId: number; name: String; amount: number }
+  //   > = {};
+  //   membersData.forEach((member) => {
+  //     netAmounts[member.userId] = {
+  //       userId: member.userId,
+  //       name: member.user.name,
+  //       amount: 0,
+  //     };
+  //   });
+  //   expensesData.forEach((expense) => {
+  //     if (netAmounts[expense.paidById]) {
+  //       netAmounts[expense.paidById].amount += Number(expense.amount);
+  //     }
+  //     expense.splits.forEach((split) => {
+  //       if (netAmounts[split.userId]) {
+  //         netAmounts[split.userId].amount -= Number(split.oweAmount);
+  //       }
+  //     });
+  //   });
+  //   setlements.forEach((settlement)=>{
+  //     if(netAmounts[settlement.paidById]){
+  //       netAmounts[settlement.paidById].amount+=Number(settlement.amount);
+  //     }
+  //     if(netAmounts[settlement.receivedById]){
+  //       netAmounts[settlement.receivedById].amount-=Number(settlement.amount);
+  //     }
+  //   })
 
-    let oweMoney: Array<{ userId: number; name: String; amount: number }> = [];
-    let getMoney: Array<{ userId: number; name: String; amount: number }> = [];
+  //   let oweMoney: Array<{ userId: number; name: String; amount: number }> = [];
+  //   let getMoney: Array<{ userId: number; name: String; amount: number }> = [];
 
-    Object.values(netAmounts).forEach((record) => {
-      if (record.amount < 0.01) {
-        oweMoney.push({ ...record, amount: Math.abs(record.amount) });
-      } else if (record.amount > 0.01) {
-        getMoney.push({ ...record });
-      }
-    });
-    // console.log(oweMoney);
-    // console.log(getMoney);
-    // console.log(netAmounts);
-    oweMoney.sort((a, b) => b.amount - a.amount);
-    getMoney.sort((a, b) => b.amount - a.amount);
+  //   Object.values(netAmounts).forEach((record) => {
+  //     if (record.amount < 0.01) {
+  //       oweMoney.push({ ...record, amount: Math.abs(record.amount) });
+  //     } else if (record.amount > 0.01) {
+  //       getMoney.push({ ...record });
+  //     }
+  //   });
+  //   // console.log(oweMoney);
+  //   // console.log(getMoney);
+  //   // console.log(netAmounts);
+  //   oweMoney.sort((a, b) => b.amount - a.amount);
+  //   getMoney.sort((a, b) => b.amount - a.amount);
 
-    let balanceData: Array<{
-      userId: number;
-      name: String;
-      oweToId: number;
-      oweTo: String;
-      amount: number;
-    }> = [];
-    let p1 = 0;
-    let p2 = 0;
+  //   let balanceData: Array<{
+  //     userId: number;
+  //     name: String;
+  //     oweToId: number;
+  //     oweTo: String;
+  //     amount: number;
+  //   }> = [];
+  //   let p1 = 0;
+  //   let p2 = 0;
 
-    while (p1 < oweMoney.length && p2 < getMoney.length) {
-      let payer = oweMoney[p1];
-      let receiver = getMoney[p2];
+  //   while (p1 < oweMoney.length && p2 < getMoney.length) {
+  //     let payer = oweMoney[p1];
+  //     let receiver = getMoney[p2];
 
-      let money = Math.min(payer.amount, receiver.amount);
-      balanceData.push({
-        userId: payer.userId,
-        name: payer.name,
-        oweToId: receiver.userId,
-        oweTo: receiver.name,
-        amount: Number(money.toFixed(2)),
-      });
+  //     let money = Math.min(payer.amount, receiver.amount);
+  //     balanceData.push({
+  //       userId: payer.userId,
+  //       name: payer.name,
+  //       oweToId: receiver.userId,
+  //       oweTo: receiver.name,
+  //       amount: Number(money.toFixed(2)),
+  //     });
 
-      payer.amount -= money;
-      receiver.amount -= money;
+  //     payer.amount -= money;
+  //     receiver.amount -= money;
 
-      if (payer.amount < 0.01) {
-        p1++;
-      }
-      if (receiver.amount < 0.01) {
-        p2++;
-      }
-    }
+  //     if (payer.amount < 0.01) {
+  //       p1++;
+  //     }
+  //     if (receiver.amount < 0.01) {
+  //       p2++;
+  //     }
+  //   }
 
-    if (p1 != oweMoney.length || p2 != getMoney.length) {
-      throw new Error("Failed to balance cleanly");
-    }
-
+  //   if (p1 != oweMoney.length || p2 != getMoney.length) {
+  //     throw new Error("Failed to balance cleanly");
+  //   }
+  try{
+    var balanceData=await getBalanceData(Number(groupId));
     res.status(200).json(balanceData);
   } catch (error: any) {
     res.status(400).json({
@@ -337,6 +475,70 @@ app.get("/api/groups/:groupId/balance", async (req: Request, res: Response) => {
   }
 });
 
+app.get("/api/:userId/balance",async(req:Request, res:Response)=>{
+  const {userId}=(req.params);
+  try{
+    const userExists = await prisma.user.findFirst({
+      where:{
+        id:{
+          equals:Number(userId)
+        }
+      }
+    });
+    if(!userExists){
+      return res.status(400).json({error: "user not found"});
+    }
+
+    const groupDet = await prisma.groupMember.findMany({
+      where:{
+        userId:{
+          equals:Number(userId)
+        }
+      }
+    });
+
+    if(groupDet.length===0){
+      return res.status(200).json([]);
+    }
+
+    let owedSummary: Array<{
+      id:number,
+      oweOrOwed:string,
+      amount: number,
+      other: string,
+      group: string
+    }> = [];
+    let num=0;
+    await Promise.all(groupDet.map(async (group)=>{
+      const balanceData = await getBalanceData(group.groupId);
+      balanceData?.forEach((data)=>{
+        if(data.oweToId===Number(userId)){
+          owedSummary.push({
+            id:++num,
+            oweOrOwed: "owed",
+            amount: data.amount,
+            other: data.name,
+            group: data.groupName
+          })
+        }
+        else if(data.userId===Number(userId)){
+          owedSummary.push({
+            id:++num,
+            oweOrOwed:"owe",
+            amount:data.amount,
+            other:data.oweTo,
+            group: data.groupName
+          })
+        }
+      })
+    }));
+
+    return res.status(200).json(owedSummary);
+  } catch(error:any){
+    res.status(400).json({error:"some error occurred. refer console for more details."});
+    console.error(error);
+  }
+})
 app.get("/api/:userId/activity", async (req: Request, res: Response) => {
   const { recent, filter } = req.query;
   const { userId } = req.params;

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Routes, Route } from "react-router";
 import axios from "axios";
 import Dashboard from "./Pages/Dashboard";
-import Activity from "./Pages/Activity";
+//import Activity from "./Pages/Activity";
 import NotFound from "./Pages/NotFound";
 import GroupDetails from "./Pages/GroupDetails";
 import Layout from "./layout";
@@ -34,7 +34,7 @@ function App() {
 
           <Route path="/dashboard" element={<Dashboard />}></Route>
 
-          <Route path="/activity" element={<Activity />}></Route>
+          {/* <Route path="/activity" element={<Activity />}></Route> */}
 
           <Route
             path="/group/:groupId"

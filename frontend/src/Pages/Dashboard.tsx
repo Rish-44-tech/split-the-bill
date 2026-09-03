@@ -9,17 +9,38 @@ export default function Dashboard() {
     () => Promise<void>,
   ] = useOutletContext();
 
-  const [recAct,setRecAct]=useState([]);
+  const [recAct,setRecAct]=useState<{
+    expenseId?: number;
+    description?: string;
+    group?: string;
+    createdBy?: string;
+    createdAt?: Date;
+  }[]>([]);
+
+  const [owedBreakdown,setOwedBreakdown]=useState<{
+    id:number,
+    oweOrOwed:string,
+    amount: number,
+    other: string,
+    group: string
+  }[]>([]);
 
   useEffect(()=>{
     const getRecAct= async ()=>{
       const response = await axios.get(`/api/${userDetails.id}/activity?recent=true&filter=all`);
       setRecAct(response.data);
     };
-    console.log(recAct);
+    
+    const getOwedBreakdown=async ()=>{
+      const response = await axios.get(`/api/${userDetails.id}/balance`);
+      setOwedBreakdown(response.data);
+    }
+
     getRecAct();
+    getOwedBreakdown();
   },[userDetails.id]);
 
+  console.log(typeof(owedBreakdown));
   return (
     <>
       <title>Dashboard</title>
@@ -43,13 +64,13 @@ export default function Dashboard() {
           className="text-[48px] leading-none text-[#16211C] font-['Fraunces']"
           style={{ fontWeight: 500 }}
         >
-          $0.00
+          ₹0.00
         </div>
         <div className="flex gap-10 mt-6">
           <div>
             <div className="text-[12px] text-[#6B7268] font-['Inter']">You owe</div>
             <div className="text-[20px] text-[#9C3D54] font-medium font-['Inter']">
-              $0.00
+              ₹0.00
             </div>
           </div>
           <div>
@@ -57,7 +78,7 @@ export default function Dashboard() {
               You are owed
             </div>
             <div className="text-[20px] text-[#2F6F5E] font-medium font-['Inter']">
-              $0.00
+              ₹0.00
             </div>
           </div>
         </div>
@@ -77,7 +98,7 @@ export default function Dashboard() {
           </p>
 
           <div className="mt-4 border-t border-[#D8D9CD]">
-            <div className="flex items-center justify-between py-4 border-b border-[#D8D9CD]">
+            {/* <div className="flex items-center justify-between py-4 border-b border-[#D8D9CD]">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-full bg-[#16211C] text-[#F6F7F1] flex items-center justify-center text-xs font-medium font-['Inter']">
                   JD
@@ -123,7 +144,36 @@ export default function Dashboard() {
                   $12.50
                 </div>
               </div>
+            </div> */}
+            {
+              owedBreakdown.map((element)=>{
+                return (
+            <div className="flex items-center justify-between py-4 border-b border-[#D8D9CD]" key={element.id}>
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-full bg-[#16211C] text-[#F6F7F1] flex items-center justify-center text-xs font-medium font-['Inter']">
+                  {element.other[0]}
+                </div>
+                <div>
+                  <div className="text-[14px] font-medium text-[#16211C] font-['Inter']">
+                    {element.other}
+                  </div>
+                  <div className="text-[12px] text-[#6B7268] font-['Inter']">
+                    {element.group}
+                  </div>
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-[12px] text-[#6B7268] font-['Inter']">
+                  {element.oweOrOwed === "owe" ? "You owe" : "You are owed"}
+                </div>
+                <div className="text-[15px] font-medium text-[#9C3D54] font-['Inter']">
+                  ₹{element.amount}
+                </div>
+              </div>
             </div>
+                )
+              })
+            }
           </div>
         </div>
 
@@ -151,7 +201,7 @@ export default function Dashboard() {
                       <span className="font-medium">{element.description}</span>
                     </p>
                     <span className="text-[12px] text-[#6B7268] font-['Inter']">
-                      {element.createdAt} · {element.group}
+                      {element.createdAt? new Date(element.createdAt).toLocaleDateString(): "N.A."} · {element.group}
                     </span>
                   </div>
                 </div>
