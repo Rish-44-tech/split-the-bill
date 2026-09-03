@@ -202,6 +202,7 @@ export type GroupWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Group"> | Date | string
   members?: Prisma.GroupMemberListRelationFilter
   expenses?: Prisma.ExpenseListRelationFilter
+  settlement?: Prisma.SettlementListRelationFilter
 }
 
 export type GroupOrderByWithRelationInput = {
@@ -210,6 +211,7 @@ export type GroupOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   members?: Prisma.GroupMemberOrderByRelationAggregateInput
   expenses?: Prisma.ExpenseOrderByRelationAggregateInput
+  settlement?: Prisma.SettlementOrderByRelationAggregateInput
 }
 
 export type GroupWhereUniqueInput = Prisma.AtLeast<{
@@ -221,6 +223,7 @@ export type GroupWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Group"> | Date | string
   members?: Prisma.GroupMemberListRelationFilter
   expenses?: Prisma.ExpenseListRelationFilter
+  settlement?: Prisma.SettlementListRelationFilter
 }, "id">
 
 export type GroupOrderByWithAggregationInput = {
@@ -248,6 +251,7 @@ export type GroupCreateInput = {
   createdAt?: Date | string
   members?: Prisma.GroupMemberCreateNestedManyWithoutGroupInput
   expenses?: Prisma.ExpenseCreateNestedManyWithoutGroupInput
+  settlement?: Prisma.SettlementCreateNestedManyWithoutGroupInput
 }
 
 export type GroupUncheckedCreateInput = {
@@ -256,6 +260,7 @@ export type GroupUncheckedCreateInput = {
   createdAt?: Date | string
   members?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutGroupInput
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutGroupInput
+  settlement?: Prisma.SettlementUncheckedCreateNestedManyWithoutGroupInput
 }
 
 export type GroupUpdateInput = {
@@ -263,6 +268,7 @@ export type GroupUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   members?: Prisma.GroupMemberUpdateManyWithoutGroupNestedInput
   expenses?: Prisma.ExpenseUpdateManyWithoutGroupNestedInput
+  settlement?: Prisma.SettlementUpdateManyWithoutGroupNestedInput
 }
 
 export type GroupUncheckedUpdateInput = {
@@ -271,6 +277,7 @@ export type GroupUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   members?: Prisma.GroupMemberUncheckedUpdateManyWithoutGroupNestedInput
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutGroupNestedInput
+  settlement?: Prisma.SettlementUncheckedUpdateManyWithoutGroupNestedInput
 }
 
 export type GroupCreateManyInput = {
@@ -353,10 +360,25 @@ export type GroupUpdateOneRequiredWithoutExpensesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.GroupUpdateToOneWithWhereWithoutExpensesInput, Prisma.GroupUpdateWithoutExpensesInput>, Prisma.GroupUncheckedUpdateWithoutExpensesInput>
 }
 
+export type GroupCreateNestedOneWithoutSettlementInput = {
+  create?: Prisma.XOR<Prisma.GroupCreateWithoutSettlementInput, Prisma.GroupUncheckedCreateWithoutSettlementInput>
+  connectOrCreate?: Prisma.GroupCreateOrConnectWithoutSettlementInput
+  connect?: Prisma.GroupWhereUniqueInput
+}
+
+export type GroupUpdateOneRequiredWithoutSettlementNestedInput = {
+  create?: Prisma.XOR<Prisma.GroupCreateWithoutSettlementInput, Prisma.GroupUncheckedCreateWithoutSettlementInput>
+  connectOrCreate?: Prisma.GroupCreateOrConnectWithoutSettlementInput
+  upsert?: Prisma.GroupUpsertWithoutSettlementInput
+  connect?: Prisma.GroupWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.GroupUpdateToOneWithWhereWithoutSettlementInput, Prisma.GroupUpdateWithoutSettlementInput>, Prisma.GroupUncheckedUpdateWithoutSettlementInput>
+}
+
 export type GroupCreateWithoutMembersInput = {
   name: string
   createdAt?: Date | string
   expenses?: Prisma.ExpenseCreateNestedManyWithoutGroupInput
+  settlement?: Prisma.SettlementCreateNestedManyWithoutGroupInput
 }
 
 export type GroupUncheckedCreateWithoutMembersInput = {
@@ -364,6 +386,7 @@ export type GroupUncheckedCreateWithoutMembersInput = {
   name: string
   createdAt?: Date | string
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutGroupInput
+  settlement?: Prisma.SettlementUncheckedCreateNestedManyWithoutGroupInput
 }
 
 export type GroupCreateOrConnectWithoutMembersInput = {
@@ -386,6 +409,7 @@ export type GroupUpdateWithoutMembersInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expenses?: Prisma.ExpenseUpdateManyWithoutGroupNestedInput
+  settlement?: Prisma.SettlementUpdateManyWithoutGroupNestedInput
 }
 
 export type GroupUncheckedUpdateWithoutMembersInput = {
@@ -393,12 +417,14 @@ export type GroupUncheckedUpdateWithoutMembersInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutGroupNestedInput
+  settlement?: Prisma.SettlementUncheckedUpdateManyWithoutGroupNestedInput
 }
 
 export type GroupCreateWithoutExpensesInput = {
   name: string
   createdAt?: Date | string
   members?: Prisma.GroupMemberCreateNestedManyWithoutGroupInput
+  settlement?: Prisma.SettlementCreateNestedManyWithoutGroupInput
 }
 
 export type GroupUncheckedCreateWithoutExpensesInput = {
@@ -406,6 +432,7 @@ export type GroupUncheckedCreateWithoutExpensesInput = {
   name: string
   createdAt?: Date | string
   members?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutGroupInput
+  settlement?: Prisma.SettlementUncheckedCreateNestedManyWithoutGroupInput
 }
 
 export type GroupCreateOrConnectWithoutExpensesInput = {
@@ -428,6 +455,7 @@ export type GroupUpdateWithoutExpensesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   members?: Prisma.GroupMemberUpdateManyWithoutGroupNestedInput
+  settlement?: Prisma.SettlementUpdateManyWithoutGroupNestedInput
 }
 
 export type GroupUncheckedUpdateWithoutExpensesInput = {
@@ -435,6 +463,53 @@ export type GroupUncheckedUpdateWithoutExpensesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   members?: Prisma.GroupMemberUncheckedUpdateManyWithoutGroupNestedInput
+  settlement?: Prisma.SettlementUncheckedUpdateManyWithoutGroupNestedInput
+}
+
+export type GroupCreateWithoutSettlementInput = {
+  name: string
+  createdAt?: Date | string
+  members?: Prisma.GroupMemberCreateNestedManyWithoutGroupInput
+  expenses?: Prisma.ExpenseCreateNestedManyWithoutGroupInput
+}
+
+export type GroupUncheckedCreateWithoutSettlementInput = {
+  id?: number
+  name: string
+  createdAt?: Date | string
+  members?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutGroupInput
+  expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutGroupInput
+}
+
+export type GroupCreateOrConnectWithoutSettlementInput = {
+  where: Prisma.GroupWhereUniqueInput
+  create: Prisma.XOR<Prisma.GroupCreateWithoutSettlementInput, Prisma.GroupUncheckedCreateWithoutSettlementInput>
+}
+
+export type GroupUpsertWithoutSettlementInput = {
+  update: Prisma.XOR<Prisma.GroupUpdateWithoutSettlementInput, Prisma.GroupUncheckedUpdateWithoutSettlementInput>
+  create: Prisma.XOR<Prisma.GroupCreateWithoutSettlementInput, Prisma.GroupUncheckedCreateWithoutSettlementInput>
+  where?: Prisma.GroupWhereInput
+}
+
+export type GroupUpdateToOneWithWhereWithoutSettlementInput = {
+  where?: Prisma.GroupWhereInput
+  data: Prisma.XOR<Prisma.GroupUpdateWithoutSettlementInput, Prisma.GroupUncheckedUpdateWithoutSettlementInput>
+}
+
+export type GroupUpdateWithoutSettlementInput = {
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  members?: Prisma.GroupMemberUpdateManyWithoutGroupNestedInput
+  expenses?: Prisma.ExpenseUpdateManyWithoutGroupNestedInput
+}
+
+export type GroupUncheckedUpdateWithoutSettlementInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  members?: Prisma.GroupMemberUncheckedUpdateManyWithoutGroupNestedInput
+  expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutGroupNestedInput
 }
 
 
@@ -445,11 +520,13 @@ export type GroupUncheckedUpdateWithoutExpensesInput = {
 export type GroupCountOutputType = {
   members: number
   expenses: number
+  settlement: number
 }
 
 export type GroupCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   members?: boolean | GroupCountOutputTypeCountMembersArgs
   expenses?: boolean | GroupCountOutputTypeCountExpensesArgs
+  settlement?: boolean | GroupCountOutputTypeCountSettlementArgs
 }
 
 /**
@@ -476,6 +553,13 @@ export type GroupCountOutputTypeCountExpensesArgs<ExtArgs extends runtime.Types.
   where?: Prisma.ExpenseWhereInput
 }
 
+/**
+ * GroupCountOutputType without action
+ */
+export type GroupCountOutputTypeCountSettlementArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SettlementWhereInput
+}
+
 
 export type GroupSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -483,6 +567,7 @@ export type GroupSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   createdAt?: boolean
   members?: boolean | Prisma.Group$membersArgs<ExtArgs>
   expenses?: boolean | Prisma.Group$expensesArgs<ExtArgs>
+  settlement?: boolean | Prisma.Group$settlementArgs<ExtArgs>
   _count?: boolean | Prisma.GroupCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["group"]>
 
@@ -508,6 +593,7 @@ export type GroupOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
 export type GroupInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   members?: boolean | Prisma.Group$membersArgs<ExtArgs>
   expenses?: boolean | Prisma.Group$expensesArgs<ExtArgs>
+  settlement?: boolean | Prisma.Group$settlementArgs<ExtArgs>
   _count?: boolean | Prisma.GroupCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type GroupIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -518,6 +604,7 @@ export type $GroupPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   objects: {
     members: Prisma.$GroupMemberPayload<ExtArgs>[]
     expenses: Prisma.$ExpensePayload<ExtArgs>[]
+    settlement: Prisma.$SettlementPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -919,6 +1006,7 @@ export interface Prisma__GroupClient<T, Null = never, ExtArgs extends runtime.Ty
   readonly [Symbol.toStringTag]: "PrismaPromise"
   members<T extends Prisma.Group$membersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Group$membersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GroupMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   expenses<T extends Prisma.Group$expensesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Group$expensesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ExpensePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  settlement<T extends Prisma.Group$settlementArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Group$settlementArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SettlementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1389,6 +1477,30 @@ export type Group$expensesArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.ExpenseScalarFieldEnum | Prisma.ExpenseScalarFieldEnum[]
+}
+
+/**
+ * Group.settlement
+ */
+export type Group$settlementArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Settlement
+   */
+  select?: Prisma.SettlementSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Settlement
+   */
+  omit?: Prisma.SettlementOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SettlementInclude<ExtArgs> | null
+  where?: Prisma.SettlementWhereInput
+  orderBy?: Prisma.SettlementOrderByWithRelationInput | Prisma.SettlementOrderByWithRelationInput[]
+  cursor?: Prisma.SettlementWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SettlementScalarFieldEnum | Prisma.SettlementScalarFieldEnum[]
 }
 
 /**

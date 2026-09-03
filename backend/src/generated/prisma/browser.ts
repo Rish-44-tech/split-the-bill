@@ -42,3 +42,8 @@ export type Expense = Prisma.ExpenseModel
  * 
  */
 export type ExpenseSplit = Prisma.ExpenseSplitModel
+/**
+ * Model Settlement
+ * 
+ */
+export type Settlement = Prisma.SettlementModel

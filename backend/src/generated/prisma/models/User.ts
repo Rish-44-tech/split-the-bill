@@ -203,6 +203,8 @@ export type UserWhereInput = {
   groups?: Prisma.GroupMemberListRelationFilter
   expenses?: Prisma.ExpenseListRelationFilter
   splits?: Prisma.ExpenseSplitListRelationFilter
+  settlementPaid?: Prisma.SettlementListRelationFilter
+  settlementReceived?: Prisma.SettlementListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -212,6 +214,8 @@ export type UserOrderByWithRelationInput = {
   groups?: Prisma.GroupMemberOrderByRelationAggregateInput
   expenses?: Prisma.ExpenseOrderByRelationAggregateInput
   splits?: Prisma.ExpenseSplitOrderByRelationAggregateInput
+  settlementPaid?: Prisma.SettlementOrderByRelationAggregateInput
+  settlementReceived?: Prisma.SettlementOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -224,6 +228,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   groups?: Prisma.GroupMemberListRelationFilter
   expenses?: Prisma.ExpenseListRelationFilter
   splits?: Prisma.ExpenseSplitListRelationFilter
+  settlementPaid?: Prisma.SettlementListRelationFilter
+  settlementReceived?: Prisma.SettlementListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -252,6 +258,8 @@ export type UserCreateInput = {
   groups?: Prisma.GroupMemberCreateNestedManyWithoutUserInput
   expenses?: Prisma.ExpenseCreateNestedManyWithoutPaidByInput
   splits?: Prisma.ExpenseSplitCreateNestedManyWithoutUserInput
+  settlementPaid?: Prisma.SettlementCreateNestedManyWithoutPaidByInput
+  settlementReceived?: Prisma.SettlementCreateNestedManyWithoutReceiverInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -261,6 +269,8 @@ export type UserUncheckedCreateInput = {
   groups?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutUserInput
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutPaidByInput
   splits?: Prisma.ExpenseSplitUncheckedCreateNestedManyWithoutUserInput
+  settlementPaid?: Prisma.SettlementUncheckedCreateNestedManyWithoutPaidByInput
+  settlementReceived?: Prisma.SettlementUncheckedCreateNestedManyWithoutReceiverInput
 }
 
 export type UserUpdateInput = {
@@ -269,6 +279,8 @@ export type UserUpdateInput = {
   groups?: Prisma.GroupMemberUpdateManyWithoutUserNestedInput
   expenses?: Prisma.ExpenseUpdateManyWithoutPaidByNestedInput
   splits?: Prisma.ExpenseSplitUpdateManyWithoutUserNestedInput
+  settlementPaid?: Prisma.SettlementUpdateManyWithoutPaidByNestedInput
+  settlementReceived?: Prisma.SettlementUpdateManyWithoutReceiverNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -278,6 +290,8 @@ export type UserUncheckedUpdateInput = {
   groups?: Prisma.GroupMemberUncheckedUpdateManyWithoutUserNestedInput
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutPaidByNestedInput
   splits?: Prisma.ExpenseSplitUncheckedUpdateManyWithoutUserNestedInput
+  settlementPaid?: Prisma.SettlementUncheckedUpdateManyWithoutPaidByNestedInput
+  settlementReceived?: Prisma.SettlementUncheckedUpdateManyWithoutReceiverNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -382,11 +396,41 @@ export type UserUpdateOneRequiredWithoutSplitsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSplitsInput, Prisma.UserUpdateWithoutSplitsInput>, Prisma.UserUncheckedUpdateWithoutSplitsInput>
 }
 
+export type UserCreateNestedOneWithoutSettlementPaidInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSettlementPaidInput, Prisma.UserUncheckedCreateWithoutSettlementPaidInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSettlementPaidInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutSettlementReceivedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSettlementReceivedInput, Prisma.UserUncheckedCreateWithoutSettlementReceivedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSettlementReceivedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSettlementPaidNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSettlementPaidInput, Prisma.UserUncheckedCreateWithoutSettlementPaidInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSettlementPaidInput
+  upsert?: Prisma.UserUpsertWithoutSettlementPaidInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSettlementPaidInput, Prisma.UserUpdateWithoutSettlementPaidInput>, Prisma.UserUncheckedUpdateWithoutSettlementPaidInput>
+}
+
+export type UserUpdateOneRequiredWithoutSettlementReceivedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSettlementReceivedInput, Prisma.UserUncheckedCreateWithoutSettlementReceivedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSettlementReceivedInput
+  upsert?: Prisma.UserUpsertWithoutSettlementReceivedInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSettlementReceivedInput, Prisma.UserUpdateWithoutSettlementReceivedInput>, Prisma.UserUncheckedUpdateWithoutSettlementReceivedInput>
+}
+
 export type UserCreateWithoutGroupsInput = {
   name: string
   email: string
   expenses?: Prisma.ExpenseCreateNestedManyWithoutPaidByInput
   splits?: Prisma.ExpenseSplitCreateNestedManyWithoutUserInput
+  settlementPaid?: Prisma.SettlementCreateNestedManyWithoutPaidByInput
+  settlementReceived?: Prisma.SettlementCreateNestedManyWithoutReceiverInput
 }
 
 export type UserUncheckedCreateWithoutGroupsInput = {
@@ -395,6 +439,8 @@ export type UserUncheckedCreateWithoutGroupsInput = {
   email: string
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutPaidByInput
   splits?: Prisma.ExpenseSplitUncheckedCreateNestedManyWithoutUserInput
+  settlementPaid?: Prisma.SettlementUncheckedCreateNestedManyWithoutPaidByInput
+  settlementReceived?: Prisma.SettlementUncheckedCreateNestedManyWithoutReceiverInput
 }
 
 export type UserCreateOrConnectWithoutGroupsInput = {
@@ -418,6 +464,8 @@ export type UserUpdateWithoutGroupsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   expenses?: Prisma.ExpenseUpdateManyWithoutPaidByNestedInput
   splits?: Prisma.ExpenseSplitUpdateManyWithoutUserNestedInput
+  settlementPaid?: Prisma.SettlementUpdateManyWithoutPaidByNestedInput
+  settlementReceived?: Prisma.SettlementUpdateManyWithoutReceiverNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGroupsInput = {
@@ -426,6 +474,8 @@ export type UserUncheckedUpdateWithoutGroupsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutPaidByNestedInput
   splits?: Prisma.ExpenseSplitUncheckedUpdateManyWithoutUserNestedInput
+  settlementPaid?: Prisma.SettlementUncheckedUpdateManyWithoutPaidByNestedInput
+  settlementReceived?: Prisma.SettlementUncheckedUpdateManyWithoutReceiverNestedInput
 }
 
 export type UserCreateWithoutExpensesInput = {
@@ -433,6 +483,8 @@ export type UserCreateWithoutExpensesInput = {
   email: string
   groups?: Prisma.GroupMemberCreateNestedManyWithoutUserInput
   splits?: Prisma.ExpenseSplitCreateNestedManyWithoutUserInput
+  settlementPaid?: Prisma.SettlementCreateNestedManyWithoutPaidByInput
+  settlementReceived?: Prisma.SettlementCreateNestedManyWithoutReceiverInput
 }
 
 export type UserUncheckedCreateWithoutExpensesInput = {
@@ -441,6 +493,8 @@ export type UserUncheckedCreateWithoutExpensesInput = {
   email: string
   groups?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutUserInput
   splits?: Prisma.ExpenseSplitUncheckedCreateNestedManyWithoutUserInput
+  settlementPaid?: Prisma.SettlementUncheckedCreateNestedManyWithoutPaidByInput
+  settlementReceived?: Prisma.SettlementUncheckedCreateNestedManyWithoutReceiverInput
 }
 
 export type UserCreateOrConnectWithoutExpensesInput = {
@@ -464,6 +518,8 @@ export type UserUpdateWithoutExpensesInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   groups?: Prisma.GroupMemberUpdateManyWithoutUserNestedInput
   splits?: Prisma.ExpenseSplitUpdateManyWithoutUserNestedInput
+  settlementPaid?: Prisma.SettlementUpdateManyWithoutPaidByNestedInput
+  settlementReceived?: Prisma.SettlementUpdateManyWithoutReceiverNestedInput
 }
 
 export type UserUncheckedUpdateWithoutExpensesInput = {
@@ -472,6 +528,8 @@ export type UserUncheckedUpdateWithoutExpensesInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   groups?: Prisma.GroupMemberUncheckedUpdateManyWithoutUserNestedInput
   splits?: Prisma.ExpenseSplitUncheckedUpdateManyWithoutUserNestedInput
+  settlementPaid?: Prisma.SettlementUncheckedUpdateManyWithoutPaidByNestedInput
+  settlementReceived?: Prisma.SettlementUncheckedUpdateManyWithoutReceiverNestedInput
 }
 
 export type UserCreateWithoutSplitsInput = {
@@ -479,6 +537,8 @@ export type UserCreateWithoutSplitsInput = {
   email: string
   groups?: Prisma.GroupMemberCreateNestedManyWithoutUserInput
   expenses?: Prisma.ExpenseCreateNestedManyWithoutPaidByInput
+  settlementPaid?: Prisma.SettlementCreateNestedManyWithoutPaidByInput
+  settlementReceived?: Prisma.SettlementCreateNestedManyWithoutReceiverInput
 }
 
 export type UserUncheckedCreateWithoutSplitsInput = {
@@ -487,6 +547,8 @@ export type UserUncheckedCreateWithoutSplitsInput = {
   email: string
   groups?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutUserInput
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutPaidByInput
+  settlementPaid?: Prisma.SettlementUncheckedCreateNestedManyWithoutPaidByInput
+  settlementReceived?: Prisma.SettlementUncheckedCreateNestedManyWithoutReceiverInput
 }
 
 export type UserCreateOrConnectWithoutSplitsInput = {
@@ -510,6 +572,8 @@ export type UserUpdateWithoutSplitsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   groups?: Prisma.GroupMemberUpdateManyWithoutUserNestedInput
   expenses?: Prisma.ExpenseUpdateManyWithoutPaidByNestedInput
+  settlementPaid?: Prisma.SettlementUpdateManyWithoutPaidByNestedInput
+  settlementReceived?: Prisma.SettlementUpdateManyWithoutReceiverNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSplitsInput = {
@@ -518,6 +582,116 @@ export type UserUncheckedUpdateWithoutSplitsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   groups?: Prisma.GroupMemberUncheckedUpdateManyWithoutUserNestedInput
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutPaidByNestedInput
+  settlementPaid?: Prisma.SettlementUncheckedUpdateManyWithoutPaidByNestedInput
+  settlementReceived?: Prisma.SettlementUncheckedUpdateManyWithoutReceiverNestedInput
+}
+
+export type UserCreateWithoutSettlementPaidInput = {
+  name: string
+  email: string
+  groups?: Prisma.GroupMemberCreateNestedManyWithoutUserInput
+  expenses?: Prisma.ExpenseCreateNestedManyWithoutPaidByInput
+  splits?: Prisma.ExpenseSplitCreateNestedManyWithoutUserInput
+  settlementReceived?: Prisma.SettlementCreateNestedManyWithoutReceiverInput
+}
+
+export type UserUncheckedCreateWithoutSettlementPaidInput = {
+  id?: number
+  name: string
+  email: string
+  groups?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutUserInput
+  expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutPaidByInput
+  splits?: Prisma.ExpenseSplitUncheckedCreateNestedManyWithoutUserInput
+  settlementReceived?: Prisma.SettlementUncheckedCreateNestedManyWithoutReceiverInput
+}
+
+export type UserCreateOrConnectWithoutSettlementPaidInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSettlementPaidInput, Prisma.UserUncheckedCreateWithoutSettlementPaidInput>
+}
+
+export type UserCreateWithoutSettlementReceivedInput = {
+  name: string
+  email: string
+  groups?: Prisma.GroupMemberCreateNestedManyWithoutUserInput
+  expenses?: Prisma.ExpenseCreateNestedManyWithoutPaidByInput
+  splits?: Prisma.ExpenseSplitCreateNestedManyWithoutUserInput
+  settlementPaid?: Prisma.SettlementCreateNestedManyWithoutPaidByInput
+}
+
+export type UserUncheckedCreateWithoutSettlementReceivedInput = {
+  id?: number
+  name: string
+  email: string
+  groups?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutUserInput
+  expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutPaidByInput
+  splits?: Prisma.ExpenseSplitUncheckedCreateNestedManyWithoutUserInput
+  settlementPaid?: Prisma.SettlementUncheckedCreateNestedManyWithoutPaidByInput
+}
+
+export type UserCreateOrConnectWithoutSettlementReceivedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSettlementReceivedInput, Prisma.UserUncheckedCreateWithoutSettlementReceivedInput>
+}
+
+export type UserUpsertWithoutSettlementPaidInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSettlementPaidInput, Prisma.UserUncheckedUpdateWithoutSettlementPaidInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSettlementPaidInput, Prisma.UserUncheckedCreateWithoutSettlementPaidInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSettlementPaidInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSettlementPaidInput, Prisma.UserUncheckedUpdateWithoutSettlementPaidInput>
+}
+
+export type UserUpdateWithoutSettlementPaidInput = {
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  groups?: Prisma.GroupMemberUpdateManyWithoutUserNestedInput
+  expenses?: Prisma.ExpenseUpdateManyWithoutPaidByNestedInput
+  splits?: Prisma.ExpenseSplitUpdateManyWithoutUserNestedInput
+  settlementReceived?: Prisma.SettlementUpdateManyWithoutReceiverNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSettlementPaidInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  groups?: Prisma.GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+  expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutPaidByNestedInput
+  splits?: Prisma.ExpenseSplitUncheckedUpdateManyWithoutUserNestedInput
+  settlementReceived?: Prisma.SettlementUncheckedUpdateManyWithoutReceiverNestedInput
+}
+
+export type UserUpsertWithoutSettlementReceivedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSettlementReceivedInput, Prisma.UserUncheckedUpdateWithoutSettlementReceivedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSettlementReceivedInput, Prisma.UserUncheckedCreateWithoutSettlementReceivedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSettlementReceivedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSettlementReceivedInput, Prisma.UserUncheckedUpdateWithoutSettlementReceivedInput>
+}
+
+export type UserUpdateWithoutSettlementReceivedInput = {
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  groups?: Prisma.GroupMemberUpdateManyWithoutUserNestedInput
+  expenses?: Prisma.ExpenseUpdateManyWithoutPaidByNestedInput
+  splits?: Prisma.ExpenseSplitUpdateManyWithoutUserNestedInput
+  settlementPaid?: Prisma.SettlementUpdateManyWithoutPaidByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSettlementReceivedInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  groups?: Prisma.GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+  expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutPaidByNestedInput
+  splits?: Prisma.ExpenseSplitUncheckedUpdateManyWithoutUserNestedInput
+  settlementPaid?: Prisma.SettlementUncheckedUpdateManyWithoutPaidByNestedInput
 }
 
 
@@ -529,12 +703,16 @@ export type UserCountOutputType = {
   groups: number
   expenses: number
   splits: number
+  settlementPaid: number
+  settlementReceived: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   groups?: boolean | UserCountOutputTypeCountGroupsArgs
   expenses?: boolean | UserCountOutputTypeCountExpensesArgs
   splits?: boolean | UserCountOutputTypeCountSplitsArgs
+  settlementPaid?: boolean | UserCountOutputTypeCountSettlementPaidArgs
+  settlementReceived?: boolean | UserCountOutputTypeCountSettlementReceivedArgs
 }
 
 /**
@@ -568,6 +746,20 @@ export type UserCountOutputTypeCountSplitsArgs<ExtArgs extends runtime.Types.Ext
   where?: Prisma.ExpenseSplitWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSettlementPaidArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SettlementWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSettlementReceivedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SettlementWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -576,6 +768,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   groups?: boolean | Prisma.User$groupsArgs<ExtArgs>
   expenses?: boolean | Prisma.User$expensesArgs<ExtArgs>
   splits?: boolean | Prisma.User$splitsArgs<ExtArgs>
+  settlementPaid?: boolean | Prisma.User$settlementPaidArgs<ExtArgs>
+  settlementReceived?: boolean | Prisma.User$settlementReceivedArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -602,6 +796,8 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   groups?: boolean | Prisma.User$groupsArgs<ExtArgs>
   expenses?: boolean | Prisma.User$expensesArgs<ExtArgs>
   splits?: boolean | Prisma.User$splitsArgs<ExtArgs>
+  settlementPaid?: boolean | Prisma.User$settlementPaidArgs<ExtArgs>
+  settlementReceived?: boolean | Prisma.User$settlementReceivedArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -613,6 +809,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     groups: Prisma.$GroupMemberPayload<ExtArgs>[]
     expenses: Prisma.$ExpensePayload<ExtArgs>[]
     splits: Prisma.$ExpenseSplitPayload<ExtArgs>[]
+    settlementPaid: Prisma.$SettlementPayload<ExtArgs>[]
+    settlementReceived: Prisma.$SettlementPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1015,6 +1213,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   groups<T extends Prisma.User$groupsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$groupsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GroupMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   expenses<T extends Prisma.User$expensesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$expensesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ExpensePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   splits<T extends Prisma.User$splitsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$splitsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ExpenseSplitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  settlementPaid<T extends Prisma.User$settlementPaidArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$settlementPaidArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SettlementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  settlementReceived<T extends Prisma.User$settlementReceivedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$settlementReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SettlementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1509,6 +1709,54 @@ export type User$splitsArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   distinct?: Prisma.ExpenseSplitScalarFieldEnum | Prisma.ExpenseSplitScalarFieldEnum[]
+}
+
+/**
+ * User.settlementPaid
+ */
+export type User$settlementPaidArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Settlement
+   */
+  select?: Prisma.SettlementSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Settlement
+   */
+  omit?: Prisma.SettlementOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SettlementInclude<ExtArgs> | null
+  where?: Prisma.SettlementWhereInput
+  orderBy?: Prisma.SettlementOrderByWithRelationInput | Prisma.SettlementOrderByWithRelationInput[]
+  cursor?: Prisma.SettlementWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SettlementScalarFieldEnum | Prisma.SettlementScalarFieldEnum[]
+}
+
+/**
+ * User.settlementReceived
+ */
+export type User$settlementReceivedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Settlement
+   */
+  select?: Prisma.SettlementSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Settlement
+   */
+  omit?: Prisma.SettlementOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SettlementInclude<ExtArgs> | null
+  where?: Prisma.SettlementWhereInput
+  orderBy?: Prisma.SettlementOrderByWithRelationInput | Prisma.SettlementOrderByWithRelationInput[]
+  cursor?: Prisma.SettlementWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SettlementScalarFieldEnum | Prisma.SettlementScalarFieldEnum[]
 }
 
 /**

@@ -55,7 +55,8 @@ export const ModelName = {
   Group: 'Group',
   GroupMember: 'GroupMember',
   Expense: 'Expense',
-  ExpenseSplit: 'ExpenseSplit'
+  ExpenseSplit: 'ExpenseSplit',
+  Settlement: 'Settlement'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -121,6 +122,17 @@ export const ExpenseSplitScalarFieldEnum = {
 } as const
 
 export type ExpenseSplitScalarFieldEnum = (typeof ExpenseSplitScalarFieldEnum)[keyof typeof ExpenseSplitScalarFieldEnum]
+
+
+export const SettlementScalarFieldEnum = {
+  id: 'id',
+  amount: 'amount',
+  paidById: 'paidById',
+  receivedById: 'receivedById',
+  groupId: 'groupId'
+} as const
+
+export type SettlementScalarFieldEnum = (typeof SettlementScalarFieldEnum)[keyof typeof SettlementScalarFieldEnum]
 
 
 export const SortOrder = {

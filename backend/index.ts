@@ -236,6 +236,14 @@ app.get("/api/groups/:groupId/balance", async (req: Request, res: Response) => {
       },
     });
 
+    const setlements = await prisma.settlement.findMany({
+      where:{
+        groupId:{
+          equals:Number(groupId)
+        }
+      }
+    });
+
     let netAmounts: Record<
       number,
       { userId: number; name: String; amount: number }
@@ -257,6 +265,14 @@ app.get("/api/groups/:groupId/balance", async (req: Request, res: Response) => {
         }
       });
     });
+    setlements.forEach((settlement)=>{
+      if(netAmounts[settlement.paidById]){
+        netAmounts[settlement.paidById].amount+=Number(settlement.amount);
+      }
+      if(netAmounts[settlement.receivedById]){
+        netAmounts[settlement.receivedById].amount-=Number(settlement.amount);
+      }
+    })
 
     let oweMoney: Array<{ userId: number; name: String; amount: number }> = [];
     let getMoney: Array<{ userId: number; name: String; amount: number }> = [];
@@ -486,6 +502,58 @@ app.get("/api/:userId/activity", async (req: Request, res: Response) => {
     res.status(400).json({ error: "could not fetch data" });
   }
 });
+
+app.post("/api/groups/:groupId/settlements",async (req:Request,res:Response)=>{
+  const {paidById,receivedById,amnt}=req.body;
+  const {groupId}=req.params;
+
+  try{
+    const checkPaid=await prisma.groupMember.findFirst({
+      where:{
+        groupId:{
+          equals:Number(groupId)
+        },
+        userId:{
+          equals:paidById
+        }
+      }
+    });
+    const checkReceived=await prisma.groupMember.findFirst({
+      where:{
+        groupId:{
+          equals:Number(groupId)
+        },
+        userId:{
+          equals:receivedById
+        }
+      }
+    });
+
+    if(!checkPaid || !checkReceived || amnt<=0){
+      return res.status(400).json({error:"check body inputs"});
+    }
+
+    if(paidById===receivedById){
+      return res.status(400).json({error:"Cannot settle with yourself"});
+    }
+    const newSettlement= await prisma.settlement.create({
+      data:{
+        amount:amnt,
+        paidById:paidById,
+        receivedById:receivedById,
+        groupId:Number(groupId)
+      }
+    });
+
+    res.status(201).json({newSettlement});
+
+    
+  }
+  catch(error:any){
+    console.error(error);
+    res.status(400).json({error:"refer console for error"});
+  }
+})
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

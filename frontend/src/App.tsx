@@ -10,12 +10,12 @@ import "./App.css";
 
 function App() {
   const [groups, setGroups] = useState([]);
-  const userDetails = { id: 7, name: "John Doe", email: "john@gmail.com" };
+  const userDetails = { id: 1, name: "John Doe", email: "john@gmail.com" };
 
   const getGroups = async () => {
-    const response = await axios.get("/api/groups?userId=7", {
+    const response = await axios.get("/api/groups?userId=1", {
       data: {
-        userId: 6,
+        userId: 1,
       },
     });
     setGroups(response.data);

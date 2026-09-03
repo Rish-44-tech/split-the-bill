@@ -19,6 +19,8 @@ model User {
   groups GroupMember[]
   expenses Expense[]
   splits ExpenseSplit[]
+  settlementPaid Settlement[] @relation("payer")
+  settlementReceived Settlement[] @relation("receiver")
 }
 
 model Group {
@@ -27,6 +29,7 @@ model Group {
   createdAt DateTime @default(now())
   members GroupMember[]
   expenses Expense[]
+  settlement Settlement[]
 }
 
 model GroupMember{
@@ -56,4 +59,15 @@ model ExpenseSplit{
   oweAmount Decimal
   expense Expense @relation(fields: [expenseId], references: [id])
   user User @relation(fields: [userId], references: [id])
+}
+
+model Settlement{
+  id Int @id @default(autoincrement())
+  amount Int
+  paidById Int
+  receivedById Int
+  groupId Int
+  group Group @relation(fields:[groupId], references:[id])
+  paidBy User @relation("payer", fields:[paidById], references:[id])
+  receiver User @relation("receiver", fields:[receivedById], references:[id])
 }
