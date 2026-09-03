@@ -44,26 +44,39 @@ export default function GroupDetails() {
   const [addMemBut,setAddMemBut]=useState(false);
   const [addExpBut,setAddExpBut]=useState(false);
 
+  const [nameInp,setNameInp]=useState("");
+  const [emailInp,setEmailInp]=useState("");
+
+  const [desc,setDesc]=useState("");
+  const [amnt,setAmnt]=useState("");
+  const [paidBy,setPaidBy]=useState(userDetails.id);
+
+  const [isInvolvedOpen,setIsInvolvedOpen]=useState(false);
+  const [involvedMembers,setInvolvedMembers]=useState<number[]>([]);
+
   useEffect(()=>{
     const getMembers = async ()=>{
       const response=await axios.get(`/api/groups/${groupId}/members`);
       setMembers(response.data);
     }
+    getMembers();
+  },[addMemBut,groupId]);
 
+  useEffect(()=>{
     const getExpenses = async ()=>{
       const response = await axios.get(`/api/groups/${groupId}/expenses`);
       setExpenses(response.data);
     }
+    getExpenses();
+  },[addExpBut,groupId]);
 
+  useEffect(()=>{
     const getBalance = async ()=>{
       const response = await axios.get(`/api/groups/${groupId}/balance`);
       setBalances(response.data);
     }
-
-    getMembers();
-    getExpenses();
     getBalance();
-  },[userDetails,groupId]);
+  },[addExpBut,groupId]);
 
   return (
     <>
@@ -129,8 +142,8 @@ export default function GroupDetails() {
                     </div>
                     <div className="text-[14px] font-medium text-[#16211C] font-['Inter']">
                       {transaction.userId!=userDetails.id ? transaction.name : "You"}{" "}
-                      <span className="font-normal text-[#6B7268]">owes</span>{" "}
-                      {transaction.oweToId!=userDetails.id ? transaction.oweTo : "you"}
+                      <span className="font-normal text-[#6B7268]">{transaction.userId!=userDetails.id ? "owes" : "owe"}{" "}</span>{" "}
+                      {transaction.oweToId!=userDetails.id ? transaction.oweTo : "You"}
                     </div>
                   </div>
                   <div className="text-[15px] font-medium text-[#9C3D54] font-['Inter']">
@@ -214,7 +227,11 @@ export default function GroupDetails() {
         Add Member
       </h2>
       <button className="text-[#6B7268] hover:text-[#16211C] transition-colors">
-        <X size={20} onClick={()=>{setAddMemBut(false);}}/>
+        <X size={20} onClick={()=>{
+          setAddMemBut(false);
+          setNameInp("");
+          setEmailInp("");
+          }}/>
       </button>
     </div>
     <div className="space-y-4">
@@ -225,7 +242,22 @@ export default function GroupDetails() {
         <input
           type="text"
           placeholder="e.g. Priya Sharma"
+          value={nameInp}
           className="w-full px-4 py-2.5 bg-white border border-[#D8D9CD] rounded-xl text-[14px] text-[#16211C] font-['Inter'] placeholder:text-[#8B9086] focus:outline-none focus:ring-2 focus:ring-[#2F6F5E]/30 focus:border-[#2F6F5E]"
+          onChange={(event)=>{setNameInp(event.target.value);}}
+          onKeyDown={async (event)=>{
+            if(event.key==="Enter"){
+              if(emailInp!="" && nameInp!=""){
+                const response= await axios.post(`/api/groups/${groupId}/members`,
+                  {
+                    emailId: emailInp.toLowerCase()
+                  }
+                );
+                setMembers([...members,response.data.user]);
+                setAddMemBut(false);
+              }
+            }
+          }}
         />
       </div>
       <div>
@@ -235,16 +267,49 @@ export default function GroupDetails() {
         <input
           type="email"
           placeholder="e.g. priya@example.com"
+          value={emailInp}
           className="w-full px-4 py-2.5 bg-white border border-[#D8D9CD] rounded-xl text-[14px] text-[#16211C] font-['Inter'] placeholder:text-[#8B9086] focus:outline-none focus:ring-2 focus:ring-[#2F6F5E]/30 focus:border-[#2F6F5E]"
+          onChange={(event)=>{setEmailInp(event.target.value);}}
+          onKeyDown={async (event)=>{
+            if(event.key==="Enter"){
+              if(emailInp!="" && nameInp!=""){
+                const response= await axios.post(`/api/groups/${groupId}/members`,
+                  {
+                    emailId: emailInp.toLowerCase()
+                  }
+                );
+                setMembers([...members,response.data.user]);
+                setAddMemBut(false);
+                setNameInp("");
+                setEmailInp("");
+              }
+            }
+          }}
         />
       </div>
     </div>
     <div className="flex items-center justify-end gap-3 mt-8">
       <button className="px-4 py-2.5 text-sm font-medium font-['Inter'] text-[#6B7268] hover:text-[#16211C] transition-colors"
-              onClick={()=>{setAddMemBut(false);}}>
+              onClick={()=>{
+                setAddMemBut(false);
+                setNameInp("");
+                setEmailInp("");
+                }}>
         Cancel
       </button>
-      <button className="px-5 py-2.5 bg-[#2F6F5E] hover:bg-[#265C4E] text-[#F6F7F1] text-sm font-medium font-['Inter'] rounded-full transition-colors active:scale-95 duration-150">
+      <button className="px-5 py-2.5 bg-[#2F6F5E] hover:bg-[#265C4E] text-[#F6F7F1] text-sm font-medium font-['Inter'] rounded-full transition-colors active:scale-95 duration-150"
+      onClick={async ()=>{
+        const response= await axios.post(`/api/groups/${groupId}/members`,
+          {
+            emailId: emailInp.toLowerCase()
+          }
+        );
+        setMembers([...members,response.data.user]);
+        setAddMemBut(false);
+        setNameInp("");
+        setEmailInp("");
+      }
+      }>
         Add Member
       </button>
     </div>
@@ -253,7 +318,8 @@ export default function GroupDetails() {
 }
 
 {addExpBut &&
-<div className="fixed inset-0 bg-[#16211C]/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+<div className="fixed inset-0 bg-[#16211C]/40 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+>
 
   <div className="bg-[#F6F7F1] rounded-2xl shadow-xl w-full max-w-md p-6 sm:p-8">
   
@@ -265,7 +331,14 @@ export default function GroupDetails() {
         Add Expense
       </h2>
       <button className="text-[#6B7268] hover:text-[#16211C] transition-colors">
-        <X size={20} onClick={()=>{setAddExpBut(false);}}/>
+        <X size={20} onClick={()=>{
+          setAddExpBut(false);
+          setAddExpBut(false);
+          setDesc("");
+          setAmnt("");
+          setInvolvedMembers([]);
+          setPaidBy(userDetails.id);
+          }}/>
       </button>
     </div>
 
@@ -276,8 +349,10 @@ export default function GroupDetails() {
         </label>
         <input
           type="text"
+          value={desc}
           placeholder="e.g. Dinner at Cafe"
           className="w-full px-4 py-2.5 bg-white border border-[#D8D9CD] rounded-xl text-[14px] text-[#16211C] font-['Inter'] placeholder:text-[#8B9086] focus:outline-none focus:ring-2 focus:ring-[#2F6F5E]/30 focus:border-[#2F6F5E]"
+          onChange={(event)=>{setDesc(event.target.value);}}
         />
       </div>
 
@@ -291,8 +366,10 @@ export default function GroupDetails() {
           </span>
           <input
             type="number"
+            value={amnt}
             placeholder="0.00"
             className="w-full pl-8 pr-4 py-2.5 bg-white border border-[#D8D9CD] rounded-xl text-[14px] text-[#16211C] font-['Inter'] placeholder:text-[#8B9086] focus:outline-none focus:ring-2 focus:ring-[#2F6F5E]/30 focus:border-[#2F6F5E]"
+            onChange={(event)=>{setAmnt(event.target.value);}}
           />
         </div>
       </div>
@@ -303,15 +380,17 @@ export default function GroupDetails() {
         </label>
         <div className="relative">
           <select
+            value={paidBy}
             className="w-full appearance-none px-4 py-2.5 bg-white border border-[#D8D9CD] rounded-xl text-[14px] text-[#16211C] font-['Inter'] focus:outline-none focus:ring-2 focus:ring-[#2F6F5E]/30 focus:border-[#2F6F5E]"
+            onChange={(event)=>{setPaidBy(Number(event.target.value));}}
           >
-            <option>You</option>
+            <option value={userDetails.id}>You</option>
             {members.map((member)=>{
               if(member.id===userDetails.id){
                 return null;
               }
               else{
-                return <option>{member.name}</option>
+                return <option value={member.id}>{member.name}</option>
               }
             })}
           </select>
@@ -322,13 +401,78 @@ export default function GroupDetails() {
         </div>
       </div>
     </div>
+    {/* Split Between (multi-select dropdown) */}
+<div className="relative">
+  <label className="block text-xs font-medium text-[#6B7268] font-['Inter'] mb-1.5 mt-3.5">
+    Split Between
+  </label>
 
+  {/* Dropdown trigger button */}
+  <button
+    type="button"
+    onClick={() => setIsInvolvedOpen(!isInvolvedOpen)}
+    className="w-full flex items-center justify-between px-4 py-2.5 bg-white border border-[#D8D9CD] rounded-xl text-[14px] text-[#16211C] font-['Inter'] focus:outline-none focus:ring-2 focus:ring-[#2F6F5E]/30 focus:border-[#2F6F5E]"
+  >
+    <span className="text-[#8B9086]">Select members</span>
+    <ChevronDown size={16} className="text-[#6B7268]" />
+  </button>
+
+  {/* Dropdown panel — toggle visibility with state later */}
+  { isInvolvedOpen &&
+  <div className="absolute z-10 mt-1.5 w-full bg-white border border-[#D8D9CD] rounded-xl shadow-lg max-h-56 overflow-y-auto">
+    {/* Repeat this block for each group member */}
+    {
+      members.map((member)=>{
+        return (
+    <label className="flex items-center gap-3 px-4 py-2.5 hover:bg-[#EFF0E9] cursor-pointer transition-colors" key={member.id}>
+      <input
+        type="checkbox"
+        checked={involvedMembers.includes(member.id)}
+        className="w-4 h-4 rounded border-[#D8D9CD] text-[#2F6F5E] focus:ring-[#2F6F5E]/30 focus:ring-offset-0 accent-[#2F6F5E]"
+        onChange={()=>{
+          setInvolvedMembers((prev)=>{
+            return prev.includes(member.id)? prev.filter((id)=>id!=member.id) : [...prev,member.id]
+          })
+        }}
+      />
+      <span className="text-[14px] text-[#16211C] font-['Inter']">
+        {member.name}
+      </span>
+    </label>
+        )
+      })
+    }
+  </div>
+}
+</div>
     <div className="flex items-center justify-end gap-3 mt-8">
       <button className="px-4 py-2.5 text-sm font-medium font-['Inter'] text-[#6B7268] hover:text-[#16211C] transition-colors"
-                onClick={()=>{setAddExpBut(false);}}>
+                onClick={()=>{
+                  setAddExpBut(false);
+                  setDesc("");
+                  setAmnt("");
+                  setInvolvedMembers([]);
+                  setPaidBy(userDetails.id);
+                  }}>
         Cancel
       </button>
-      <button className="px-5 py-2.5 bg-[#16211C] hover:bg-[#22322A] text-[#F6F7F1] text-sm font-medium font-['Inter'] rounded-full transition-colors active:scale-95 duration-150">
+      <button className="px-5 py-2.5 bg-[#16211C] hover:bg-[#22322A] text-[#F6F7F1] text-sm font-medium font-['Inter'] rounded-full transition-colors active:scale-95 duration-150"
+              onClick={async ()=>{
+
+                await axios.post(`/api/expenses`,{
+                  description: desc,
+                  amount:Number(amnt),
+                  groupId:Number(groupId),
+                  paidById:paidBy,
+                  memberIds:involvedMembers
+                });
+
+                setAddExpBut(false);
+                setDesc("");
+                setAmnt("");
+                setInvolvedMembers([]);
+                setPaidBy(userDetails.id);
+              }}>
         Add Expense
       </button>
     </div>

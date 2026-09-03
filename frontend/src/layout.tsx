@@ -1,5 +1,6 @@
 import { Outlet } from "react-router";
 import Header from "./Components/Header";
+import {useState} from 'react';
 import "./index.css";
 
 export default function Layout({
@@ -9,9 +10,10 @@ export default function Layout({
   groups :{id:number, name: string, createdAt:Date}[],
   getGroups: ()=>Promise<void>
 }) {
+  const [addGroupClicked,setAddGroupClicked]=useState(false);
   return (
     <div className="flex flex-col h-screen overflow-hidden bg-[#F6F7F1]">
-      <Header userDetails={userDetails} groups={groups} />
+      <Header userDetails={userDetails} groups={groups} getGroups={getGroups}/>
 
       <main className="flex-1 h-full overflow-y-auto p-8">
         <Outlet context={[userDetails,groups,getGroups]}/>
