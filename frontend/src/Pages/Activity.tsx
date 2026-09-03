@@ -37,18 +37,20 @@ export default function Activity() {
   return (
     <>
       <title>Activity</title>
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between pb-6 border-b border-slate-200 mb-8 gap-4">
+
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between pb-6 border-b border-[#D8D9CD] mb-8 gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Your Activity</h1>
-          <p className="text-sm text-slate-500">
-            A real-time ledger of expenses, payments, and updates across your
-            circles.
+          <h1 className="text-2xl font-semibold text-[#16211C] font-['Inter']">
+            Your Activity
+          </h1>
+          <p className="text-sm text-[#6B7268] mt-1 font-['Inter']">
+            A history of expenses and payments across your groups.
           </p>
         </div>
 
         <div className="flex items-center gap-2">
           <select
-            className="bg-white border border-slate-200 text-sm font-medium text-slate-700 px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-500"
+            className="bg-white border border-[#D8D9CD] text-sm font-medium text-[#16211C] font-['Inter'] px-3 py-2 rounded-full focus:outline-none focus:ring-2 focus:ring-[#2F6F5E]"
             onChange={(event) => {
               setGroupFilter((event.target.value!="All Groups") ? event.target.value : "all");
             }}
@@ -58,40 +60,33 @@ export default function Activity() {
         </div>
       </div>
 
-      <div className="bg-white border border-slate-200 rounded-xl divide-y divide-slate-100 shadow-sm overflow-hidden">
-
+      <div className="border-t border-[#D8D9CD]">
         {activity.map((element) => {
           return (
-            <div className="flex items-center justify-between p-4 hover:bg-slate-50/50 transition-colors gap-4">
-              <div className="flex items-start gap-4">
+            <div className="flex items-center justify-between py-4 border-b border-[#D8D9CD] hover:bg-[#EFF0E9] transition-colors gap-4">
+              <div className="flex items-start gap-3">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#2F6F5E] mt-2 shrink-0"></div>
                 <div>
-                  <p className="text-sm text-slate-600 font-normal">
-                    <span className="font-semibold text-slate-900">
-                      {element.createdBy}
-                    </span>{" "}
+                  <p className="text-[14px] text-[#16211C] font-['Inter']">
+                    <span className="font-medium">{element.createdBy}</span>{" "}
                     added{" "}
-                    <span className="font-semibold text-slate-900">
-                      "{element.description}"
-                    </span>{" "}
+                    <span className="font-medium">"{element.description}"</span>{" "}
                     in{" "}
-                    <span className="font-medium text-slate-900">
-                      {element.group}
-                    </span>
+                    <span className="font-medium">{element.group}</span>
                   </p>
-                  <p className="mt-1 text-xs text-slate-400 font-medium">
-                    {/* {element.createdAt} */}
-                    9/7/2026, 1030
+                  <p className="mt-0.5 text-[12px] text-[#6B7268] font-['Inter']">
+                    9/7/2026, 10:30
                   </p>
                 </div>
               </div>
               <div className="text-right flex-shrink-0">
-                <span className="text-xs text-slate-400 font-medium block">
-                  {element.nature === "NULL" ? "" : element.nature }
+                <span className="text-[11px] text-[#6B7268] font-['Inter'] block">
+                  Your share
                 </span>
-                <span
-                  className={`text-sm font-bold text-${element.nature === "You owe" ? "orange-600" : "emerald-600"}`}
-                >
-                  {element.amount===0 || !element.amount ? "No dues" :`Rs.${element.amount}` }
+                <span className="text-[14px] font-semibold text-[#16211C] font-['Inter']">
+                  {element.amount === 0 || !element.amount
+                    ? "Not involved"
+                    : `\u20b9${element.amount}`}
                 </span>
               </div>
             </div>

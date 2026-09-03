@@ -6,7 +6,6 @@ import Activity from "./Pages/Activity";
 import NotFound from "./Pages/NotFound";
 import GroupDetails from "./Pages/GroupDetails";
 import Layout from "./layout";
-import "./App.css";
 
 function App() {
   const [groups, setGroups] = useState([]);

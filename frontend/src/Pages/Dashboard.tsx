@@ -19,123 +19,139 @@ export default function Dashboard() {
     console.log(recAct);
     getRecAct();
   },[userDetails.id]);
+
   return (
     <>
       <title>Dashboard</title>
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-slate-900">Dashboard Summary</h1>
-        <p className="text-sm text-slate-500">
+
+
+      <div className="mb-10">
+        <h1 className="text-2xl font-semibold text-[#16211C] font-['Inter']">
+          Dashboard Summary
+        </h1>
+        <p className="text-sm text-[#6B7268] mt-1 font-['Inter']">
           An overview of your balances across all expense groups.
         </p>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="flex flex-col gap-2 p-6 bg-white border border-slate-200 rounded-xl shadow-sm">
-          <span className="text-xs font-semibold tracking-wider text-slate-400 uppercase">
-            Total Balance
-          </span>
-          <span className="text-3xl font-bold text-slate-800">$0.00</span>
+
+      {/* Hero balance */}
+      <div className="mb-10 pb-8 border-b border-[#D8D9CD]">
+        <div className="text-[13px] text-[#6B7268] mb-2 font-['Inter']">
+          Total balance
         </div>
-        <div className="flex flex-col gap-2 p-6 bg-white border border-slate-200 rounded-xl shadow-sm border-l-4 border-l-orange-500">
-          <span className="text-xs font-semibold tracking-wider text-slate-400 uppercase">
-            You owe
-          </span>
-          <span className="text-3xl font-bold text-orange-600">$0.00</span>
+        <div
+          className="text-[48px] leading-none text-[#16211C] font-['Fraunces']"
+          style={{ fontWeight: 500 }}
+        >
+          $0.00
         </div>
-        <div className="flex flex-col gap-2 p-6 bg-white border border-slate-200 rounded-xl shadow-sm border-l-4 border-l-emerald-500">
-          <span className="text-xs font-semibold tracking-wider text-slate-400 uppercase">
-            You are owed
-          </span>
-          <span className="text-3xl font-bold text-emerald-600">$0.00</span>
+        <div className="flex gap-10 mt-6">
+          <div>
+            <div className="text-[12px] text-[#6B7268] font-['Inter']">You owe</div>
+            <div className="text-[20px] text-[#9C3D54] font-medium font-['Inter']">
+              $0.00
+            </div>
+          </div>
+          <div>
+            <div className="text-[12px] text-[#6B7268] font-['Inter']">
+              You are owed
+            </div>
+            <div className="text-[20px] text-[#2F6F5E] font-medium font-['Inter']">
+              $0.00
+            </div>
+          </div>
         </div>
       </div>
-      {/* 🎯 Place this container immediately below your metrics grid <div> */}
-      <div className="mt-8 grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
-        {/* Left Side: Balances Breakdown (Takes 3 columns on large screens) */}
-        <div className="lg:col-span-3 flex flex-col gap-4 bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
-          <div>
-            <h3 className="text-lg font-bold text-slate-900">Owed Breakdown</h3>
-            <p className="text-xs text-slate-500">
-              A detailed look at who you owe or who owes you.
-            </p>
-          </div>
 
-          {/* List Container */}
-          <div className="flex flex-col gap-3 mt-2">
-            {/* Row Item: You are owed (Green) */}
-            <div className="flex items-center justify-between p-4 rounded-lg bg-emerald-50/50 border border-emerald-100">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 items-start">
+        {/* Left: Owed Breakdown */}
+        <div className="lg:col-span-3">
+          <h3
+            className="text-[16px] text-[#16211C] font-['Fraunces']"
+            style={{ fontWeight: 500 }}
+          >
+            Owed Breakdown
+          </h3>
+          <p className="text-xs text-[#6B7268] mt-1 font-['Inter']">
+            A detailed look at who you owe or who owes you.
+          </p>
+
+          <div className="mt-4 border-t border-[#D8D9CD]">
+            <div className="flex items-center justify-between py-4 border-b border-[#D8D9CD]">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold text-sm">
+                <div className="w-9 h-9 rounded-full bg-[#16211C] text-[#F6F7F1] flex items-center justify-center text-xs font-medium font-['Inter']">
                   JD
                 </div>
                 <div>
-                  <div className="font-semibold text-sm text-slate-800">
+                  <div className="text-[14px] font-medium text-[#16211C] font-['Inter']">
                     John Doe
                   </div>
-                  <div className="text-xs text-slate-500">in 🚗 Road Trip</div>
+                  <div className="text-[12px] text-[#6B7268] font-['Inter']">
+                    Road Trip
+                  </div>
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-xs text-slate-400 font-medium">
+                <div className="text-[12px] text-[#6B7268] font-['Inter']">
                   owes you
                 </div>
-                <div className="font-bold text-emerald-600">$45.00</div>
+                <div className="text-[15px] font-medium text-[#2F6F5E] font-['Inter']">
+                  $45.00
+                </div>
               </div>
             </div>
 
-            {/* Row Item: You owe (Orange) */}
-            <div className="flex items-center justify-between p-4 rounded-lg bg-orange-50/50 border border-orange-100">
+            <div className="flex items-center justify-between py-4 border-b border-[#D8D9CD]">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-700 font-bold text-sm">
+                <div className="w-9 h-9 rounded-full bg-[#16211C] text-[#F6F7F1] flex items-center justify-center text-xs font-medium font-['Inter']">
                   AS
                 </div>
                 <div>
-                  <div className="font-semibold text-sm text-slate-800">
+                  <div className="text-[14px] font-medium text-[#16211C] font-['Inter']">
                     Alex Smith
                   </div>
-                  <div className="text-xs text-slate-500">
-                    in 🏢 Apartment Split
+                  <div className="text-[12px] text-[#6B7268] font-['Inter']">
+                    Apartment Split
                   </div>
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-xs text-slate-400 font-medium">
+                <div className="text-[12px] text-[#6B7268] font-['Inter']">
                   you owe
                 </div>
-                <div className="font-bold text-orange-600">$12.50</div>
+                <div className="text-[15px] font-medium text-[#9C3D54] font-['Inter']">
+                  $12.50
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Right Side: Recent Activity Feed (Takes 2 columns on large screens) */}
-        <div className="lg:col-span-2 flex flex-col gap-4 bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
-          <div>
-            <h3 className="text-lg font-bold text-slate-900">
-              Recent Activity
-            </h3>
-            <p className="text-xs text-slate-500">
-              Latest updates across all your groups.
-            </p>
-          </div>
+        {/* Right: Recent Activity — recAct logic untouched */}
+        <div className="lg:col-span-2">
+          <h3
+            className="text-[16px] text-[#16211C] font-['Fraunces']"
+            style={{ fontWeight: 500 }}
+          >
+            Recent Activity
+          </h3>
+          <p className="text-xs text-[#6B7268] mt-1 font-['Inter']">
+            Latest updates across all your groups.
+          </p>
 
-          <div className="flex flex-col gap-4 mt-2 relative before:absolute before:left-[19px] before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-100">
-
+          <div className="mt-4 flex flex-col gap-4">
             {recAct.map((element) => {
               return (
-                <div className="flex gap-3 relative items-start" key={element.expenseId}>
-                  <div className="w-10 h-10 rounded-full bg-slate-100 flex-shrink-0 flex items-center justify-center border border-white z-10 text-sm">
-                    ⛽
-                  </div>
-                  <div className="flex-1 pt-1">
-                    <p className="text-sm text-slate-700">
-                      <span className="font-semibold text-slate-900">{element.createdBy}</span>{" "}
+                <div className="flex gap-3" key={element.expenseId}>
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#2F6F5E] mt-2 shrink-0"></div>
+                  <div>
+                    <p className="text-[14px] text-[#16211C] font-['Inter']">
+                      <span className="font-medium">{element.createdBy}</span>{" "}
                       added{" "}
-                      <span className="font-medium text-slate-900">
-                        {element.description}
-                      </span>
+                      <span className="font-medium">{element.description}</span>
                     </p>
-                    <span className="text-xs text-slate-400">
-                      {element.createdAt} • {element.group}
+                    <span className="text-[12px] text-[#6B7268] font-['Inter']">
+                      {element.createdAt} · {element.group}
                     </span>
                   </div>
                 </div>
