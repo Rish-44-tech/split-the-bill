@@ -200,9 +200,7 @@ app.get("/api/groups/:groupId/members", async (req: Request, res: Response) => {
   }
 });
 
-app.get(
-  "/api/groups/:groupId/expenses",
-  async (req: Request, res: Response) => {
+app.get("/api/groups/:groupId/expenses",async (req: Request, res: Response) => {
     const { groupId } = req.params;
     try {
       const expenses = await prisma.expense.findMany({
@@ -211,8 +209,8 @@ app.get(
             equals: Number(groupId),
           },
         },
-        include: {
-          splits: true,
+        include:{
+          paidBy:true
         },
         orderBy: {
           createdAt: "desc",
@@ -229,6 +227,17 @@ app.get(
 app.post("/api/users", async (req: Request, res: Response) => {
   const { name, email } = req.body;
   try {
+    const checkIfExists = await prisma.user.findFirst({
+      where:{
+        email:{
+          equals:email
+        }
+      }
+    });
+
+    if(checkIfExists){
+      return res.status(409).json({error:"User already exists."});
+    }
     const newUser = await prisma.user.create({
       data: { name, email },
     });
@@ -262,16 +271,43 @@ app.post("/api/groups", async (req: Request, res: Response) => {
   }
 });
 
-app.post(
-  "/api/groups/:groupId/members/:userId",
+app.post("/api/groups/:groupId/members",
   async (req: Request, res: Response) => {
-    const { groupId, userId } = req.params;
+    const { groupId } = req.params;
+    const {emailId}=req.body;
     try {
+      const user=await prisma.user.findFirst({
+        where:{
+          email:{
+            equals:emailId
+          }
+        }
+      });
+      if(!user){
+        return res.status(404).json({error:"User does not exist."})
+      }
+
+      const checkGroup=await prisma.groupMember.findFirst({
+        where:{
+          groupId:{
+            equals:Number(groupId)
+          },
+          userId:{
+            equals:user.id
+          }
+        }
+      });
+      if(checkGroup){
+        return res.status(409).json({error:"Member already exists in group."})
+      }
       const groupMemberAdded = await prisma.groupMember.create({
         data: {
-          userId: Number(userId),
+          userId: user.id,
           groupId: Number(groupId),
         },
+        include:{
+          user:true
+        }
       });
       res.status(201).json(groupMemberAdded);
     } catch (error: any) {
@@ -284,7 +320,13 @@ app.post(
 );
 
 app.post("/api/expenses", async (req: Request, res: Response) => {
-  const { description, amount, groupId, paidById, memberIds } = req.body;
+  const { description, amount, groupId, paidById, memberIds }:{
+    description: string,
+    amount: number,
+    groupId:number,
+    paidById:number,
+    memberIds:number[]
+  } = req.body;
   try {
     const checkPaidMember = await prisma.groupMember.findFirst({
       where: {
@@ -318,7 +360,7 @@ app.post("/api/expenses", async (req: Request, res: Response) => {
         .status(400)
         .json({ error: "One or more members are not part of the group." });
     }
-
+    const memberIdsFiltered=memberIds.filter((element)=>element!==paidById)
     const splitAmnt = Number(amount) / memberIds.length;
     const newExpense = await prisma.expense.create({
       data: {
