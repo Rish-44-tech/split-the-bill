@@ -25,6 +25,9 @@ export default function Dashboard() {
     group: string
   }[]>([]);
 
+  const [oweTotal,setOweTotal]=useState(0);
+  const [owedTotal,setOwedTotal]=useState(0);
+
   useEffect(()=>{
     const getRecAct= async ()=>{
       const response = await axios.get(`/api/${userDetails.id}/activity?recent=true&filter=all`);
@@ -33,7 +36,9 @@ export default function Dashboard() {
     
     const getOwedBreakdown=async ()=>{
       const response = await axios.get(`/api/${userDetails.id}/balance`);
-      setOwedBreakdown(response.data);
+      setOwedBreakdown(response.data[0]);
+      setOweTotal(response.data[1]);
+      setOwedTotal(response.data[2]);
     }
 
     getRecAct();
@@ -64,13 +69,13 @@ export default function Dashboard() {
           className="text-[48px] leading-none text-[#16211C] font-['Fraunces']"
           style={{ fontWeight: 500 }}
         >
-          ₹0.00
+          ₹{owedTotal-oweTotal}
         </div>
         <div className="flex gap-10 mt-6">
           <div>
             <div className="text-[12px] text-[#6B7268] font-['Inter']">You owe</div>
             <div className="text-[20px] text-[#9C3D54] font-medium font-['Inter']">
-              ₹0.00
+              ₹{oweTotal}
             </div>
           </div>
           <div>
@@ -78,7 +83,7 @@ export default function Dashboard() {
               You are owed
             </div>
             <div className="text-[20px] text-[#2F6F5E] font-medium font-['Inter']">
-              ₹0.00
+              ₹{owedTotal}
             </div>
           </div>
         </div>

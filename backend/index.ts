@@ -508,6 +508,7 @@ app.get("/api/:userId/balance",async(req:Request, res:Response)=>{
       other: string,
       group: string
     }> = [];
+
     let num=0;
     await Promise.all(groupDet.map(async (group)=>{
       const balanceData = await getBalanceData(group.groupId);
@@ -533,7 +534,18 @@ app.get("/api/:userId/balance",async(req:Request, res:Response)=>{
       })
     }));
 
-    return res.status(200).json(owedSummary);
+    let totalOwe=(0);
+    let totalOwed=(0);
+    owedSummary.forEach((element)=>{
+      if(element.oweOrOwed==="owe"){
+        totalOwe+=element.amount;
+      }
+      else{
+        totalOwed+=element.amount;
+      }
+    });
+     let outputFinal = [owedSummary,totalOwe,totalOwed];
+    return res.status(200).json(outputFinal);
   } catch(error:any){
     res.status(400).json({error:"some error occurred. refer console for more details."});
     console.error(error);
