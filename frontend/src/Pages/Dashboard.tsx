@@ -22,7 +22,8 @@ export default function Dashboard() {
     oweOrOwed:string,
     amount: number,
     other: string,
-    group: string
+    otherId:string,
+    group: string[]
   }[]>([]);
 
   const [oweTotal,setOweTotal]=useState(0);
@@ -117,7 +118,7 @@ export default function Dashboard() {
                     {element.other}
                   </div>
                   <div className="text-[12px] text-[#6B7268] font-['Inter']">
-                    {element.group}
+                    {element.group.join(", ")}
                   </div>
                 </div>
               </div>

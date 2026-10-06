@@ -540,37 +540,85 @@ app.get("/api/:userId/balance",async(req:Request, res:Response)=>{
     });
 
     if(groupDet.length===0){
-      return res.status(200).json([]);
+      return res.status(200).json([[],0,0]);
     }
 
     let owedSummary: Array<{
       id:number,
       oweOrOwed:string,
       amount: number,
+      otherId: number,
       other: string,
-      group: string
+      group: string[]
     }> = [];
 
     let num=0;
     await Promise.all(groupDet.map(async (group)=>{
       const balanceData = await getBalanceData(group.groupId);
       balanceData?.forEach((data)=>{
+        if(data.userId!=Number(userId) && data.oweToId!=Number(userId)){return}
+        const entry=owedSummary.find((entry)=>
+          (entry.otherId===data.userId || entry.otherId===data.oweToId)
+        )
+        if(entry){
+          if(!entry.group.includes(data.groupName)){
+            entry.group.push(data.groupName);
+          }
+          if(entry.oweOrOwed==="owe"){
+            if(data.oweToId===Number(userId)){
+              if(data.amount-entry.amount>0.01){
+                entry.oweOrOwed="owed";
+                entry.amount=data.amount-entry.amount;
+              }
+              else if(data.amount-entry.amount<-0.01){
+                entry.amount=entry.amount-data.amount;
+              }
+              else{
+                owedSummary.splice(owedSummary.indexOf(entry),1);
+              }
+            }
+            else if(data.userId===Number(userId)){
+              entry.amount+=data.amount;
+            }
+          }
+          else{
+            if(data.userId===Number(userId)){
+              if(data.amount-entry.amount>0.01){
+                entry.oweOrOwed="owe";
+                entry.amount=data.amount-entry.amount;
+              }
+              else if(data.amount-entry.amount<-0.01){
+                entry.amount=entry.amount-data.amount;
+              }
+              else{
+                owedSummary.splice(owedSummary.indexOf(entry),1);
+              }
+            }
+            else if(data.oweToId===Number(userId)){
+              entry.amount+=data.amount;
+            }
+          }
+          entry.amount=Number(entry.amount.toFixed(2));
+          return;
+        }
         if(data.oweToId===Number(userId)){
           owedSummary.push({
             id:++num,
             oweOrOwed: "owed",
-            amount: data.amount,
+            amount: Number(data.amount.toFixed(2)),
             other: data.name,
-            group: data.groupName
+            otherId:data.userId,
+            group: [data.groupName]
           })
         }
         else if(data.userId===Number(userId)){
           owedSummary.push({
             id:++num,
             oweOrOwed:"owe",
-            amount:data.amount,
+            amount:Number(data.amount.toFixed(2)),
             other:data.oweTo,
-            group: data.groupName
+            otherId:data.oweToId,
+            group: [data.groupName]
           })
         }
       })
@@ -586,7 +634,7 @@ app.get("/api/:userId/balance",async(req:Request, res:Response)=>{
         totalOwed+=element.amount;
       }
     });
-     let outputFinal = [owedSummary,totalOwe,totalOwed];
+     let outputFinal = [owedSummary,Number(totalOwe.toFixed(2)),Number(totalOwed.toFixed(2))];
     return res.status(200).json(outputFinal);
   } catch(error:any){
     res.status(400).json({error:"some error occurred. refer console for more details."});
