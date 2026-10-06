@@ -1,7 +1,8 @@
 import express from "express";
-import type { Request, Response } from "express";
+import type { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import "dotenv/config";
+import bcrypt from "bcrypt";
 import { prisma } from "./src/prisma.ts";
 import { create } from "node:domain";
 import { reverse } from "node:dns";
@@ -662,12 +663,7 @@ app.get("/api/:userId/activity", async (req: Request, res: Response) => {
                   expenses: {
                     include: {
                       splits: true,
-                    },
-                    orderBy:[
-                      {
-                        createdAt:"desc"
-                      }
-                    ]
+                    }
                   },
                   members: {
                     include: {
@@ -702,12 +698,7 @@ app.get("/api/:userId/activity", async (req: Request, res: Response) => {
                   expenses: {
                     include: {
                       splits: true,
-                    },
-                    orderBy:[
-                      {
-                        createdAt:"asc"
-                      }
-                    ]
+                    }
                   },
                   members: {
                     include: {
@@ -785,18 +776,18 @@ app.get("/api/:userId/activity", async (req: Request, res: Response) => {
         }
         activityData.push(details);
 
-        if (recentActData.length <= 4) {
-          recentActData.push({
-            expenseId: details.expenseId,
-            description: details.description,
-            group: details.group,
-            createdBy: details.createdBy,
-            createdAt: details.createdAt,
+        recentActData.push({
+        expenseId: details.expenseId,
+        description: details.description,
+        group: details.group,
+        createdBy: details.createdBy,
+        createdAt: details.createdAt,
           });
-        }
       });
     });
-
+    activityData.sort((a,b)=>(b.createdAt?.getTime() ?? 0) - (a.createdAt?.getTime() ?? 0));
+    recentActData.sort((a,b)=>(b.createdAt?.getTime() ?? 0) - (a.createdAt?.getTime() ?? 0));
+    recentActData.splice(4);
     if (String(recent).toLowerCase() === "true") {
       return res.status(200).json(recentActData);
     }
@@ -854,6 +845,13 @@ app.post("/api/groups/:groupId/settlements",async (req:Request,res:Response)=>{
     console.error(error);
     res.status(400).json({error:"refer console for error"});
   }
+})
+
+app.post("/api/auth/register",async (req:Request,res:Response)=>{
+  const {name,email,password}=req.body;
+  const hash=await bcrypt.hash(password,10);
+  const user=await prisma.user.create({data:{name,email,password:hash}});
+  res.status(201).json({id:user.id,name:user.name,email:user.email});
 })
 
 app.listen(PORT, () => {

@@ -38,18 +38,21 @@ export type UserMinAggregateOutputType = {
   id: number | null
   name: string | null
   email: string | null
+  password: string | null
 }
 
 export type UserMaxAggregateOutputType = {
   id: number | null
   name: string | null
   email: string | null
+  password: string | null
 }
 
 export type UserCountAggregateOutputType = {
   id: number
   name: number
   email: number
+  password: number
   _all: number
 }
 
@@ -66,18 +69,21 @@ export type UserMinAggregateInputType = {
   id?: true
   name?: true
   email?: true
+  password?: true
 }
 
 export type UserMaxAggregateInputType = {
   id?: true
   name?: true
   email?: true
+  password?: true
 }
 
 export type UserCountAggregateInputType = {
   id?: true
   name?: true
   email?: true
+  password?: true
   _all?: true
 }
 
@@ -171,6 +177,7 @@ export type UserGroupByOutputType = {
   id: number
   name: string
   email: string
+  password: string
   _count: UserCountAggregateOutputType | null
   _avg: UserAvgAggregateOutputType | null
   _sum: UserSumAggregateOutputType | null
@@ -200,6 +207,7 @@ export type UserWhereInput = {
   id?: Prisma.IntFilter<"User"> | number
   name?: Prisma.StringFilter<"User"> | string
   email?: Prisma.StringFilter<"User"> | string
+  password?: Prisma.StringFilter<"User"> | string
   groups?: Prisma.GroupMemberListRelationFilter
   expenses?: Prisma.ExpenseListRelationFilter
   splits?: Prisma.ExpenseSplitListRelationFilter
@@ -211,6 +219,7 @@ export type UserOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  password?: Prisma.SortOrder
   groups?: Prisma.GroupMemberOrderByRelationAggregateInput
   expenses?: Prisma.ExpenseOrderByRelationAggregateInput
   splits?: Prisma.ExpenseSplitOrderByRelationAggregateInput
@@ -225,6 +234,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   name?: Prisma.StringFilter<"User"> | string
+  password?: Prisma.StringFilter<"User"> | string
   groups?: Prisma.GroupMemberListRelationFilter
   expenses?: Prisma.ExpenseListRelationFilter
   splits?: Prisma.ExpenseSplitListRelationFilter
@@ -236,6 +246,7 @@ export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  password?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _avg?: Prisma.UserAvgOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
@@ -250,11 +261,13 @@ export type UserScalarWhereWithAggregatesInput = {
   id?: Prisma.IntWithAggregatesFilter<"User"> | number
   name?: Prisma.StringWithAggregatesFilter<"User"> | string
   email?: Prisma.StringWithAggregatesFilter<"User"> | string
+  password?: Prisma.StringWithAggregatesFilter<"User"> | string
 }
 
 export type UserCreateInput = {
   name: string
   email: string
+  password?: string
   groups?: Prisma.GroupMemberCreateNestedManyWithoutUserInput
   expenses?: Prisma.ExpenseCreateNestedManyWithoutPaidByInput
   splits?: Prisma.ExpenseSplitCreateNestedManyWithoutUserInput
@@ -266,6 +279,7 @@ export type UserUncheckedCreateInput = {
   id?: number
   name: string
   email: string
+  password?: string
   groups?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutUserInput
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutPaidByInput
   splits?: Prisma.ExpenseSplitUncheckedCreateNestedManyWithoutUserInput
@@ -276,6 +290,7 @@ export type UserUncheckedCreateInput = {
 export type UserUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
   groups?: Prisma.GroupMemberUpdateManyWithoutUserNestedInput
   expenses?: Prisma.ExpenseUpdateManyWithoutPaidByNestedInput
   splits?: Prisma.ExpenseSplitUpdateManyWithoutUserNestedInput
@@ -287,6 +302,7 @@ export type UserUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
   groups?: Prisma.GroupMemberUncheckedUpdateManyWithoutUserNestedInput
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutPaidByNestedInput
   splits?: Prisma.ExpenseSplitUncheckedUpdateManyWithoutUserNestedInput
@@ -298,23 +314,27 @@ export type UserCreateManyInput = {
   id?: number
   name: string
   email: string
+  password?: string
 }
 
 export type UserUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type UserUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type UserCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  password?: Prisma.SortOrder
 }
 
 export type UserAvgOrderByAggregateInput = {
@@ -325,12 +345,14 @@ export type UserMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  password?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  password?: Prisma.SortOrder
 }
 
 export type UserSumOrderByAggregateInput = {
@@ -427,6 +449,7 @@ export type UserUpdateOneRequiredWithoutSettlementReceivedNestedInput = {
 export type UserCreateWithoutGroupsInput = {
   name: string
   email: string
+  password?: string
   expenses?: Prisma.ExpenseCreateNestedManyWithoutPaidByInput
   splits?: Prisma.ExpenseSplitCreateNestedManyWithoutUserInput
   settlementPaid?: Prisma.SettlementCreateNestedManyWithoutPaidByInput
@@ -437,6 +460,7 @@ export type UserUncheckedCreateWithoutGroupsInput = {
   id?: number
   name: string
   email: string
+  password?: string
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutPaidByInput
   splits?: Prisma.ExpenseSplitUncheckedCreateNestedManyWithoutUserInput
   settlementPaid?: Prisma.SettlementUncheckedCreateNestedManyWithoutPaidByInput
@@ -462,6 +486,7 @@ export type UserUpdateToOneWithWhereWithoutGroupsInput = {
 export type UserUpdateWithoutGroupsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
   expenses?: Prisma.ExpenseUpdateManyWithoutPaidByNestedInput
   splits?: Prisma.ExpenseSplitUpdateManyWithoutUserNestedInput
   settlementPaid?: Prisma.SettlementUpdateManyWithoutPaidByNestedInput
@@ -472,6 +497,7 @@ export type UserUncheckedUpdateWithoutGroupsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutPaidByNestedInput
   splits?: Prisma.ExpenseSplitUncheckedUpdateManyWithoutUserNestedInput
   settlementPaid?: Prisma.SettlementUncheckedUpdateManyWithoutPaidByNestedInput
@@ -481,6 +507,7 @@ export type UserUncheckedUpdateWithoutGroupsInput = {
 export type UserCreateWithoutExpensesInput = {
   name: string
   email: string
+  password?: string
   groups?: Prisma.GroupMemberCreateNestedManyWithoutUserInput
   splits?: Prisma.ExpenseSplitCreateNestedManyWithoutUserInput
   settlementPaid?: Prisma.SettlementCreateNestedManyWithoutPaidByInput
@@ -491,6 +518,7 @@ export type UserUncheckedCreateWithoutExpensesInput = {
   id?: number
   name: string
   email: string
+  password?: string
   groups?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutUserInput
   splits?: Prisma.ExpenseSplitUncheckedCreateNestedManyWithoutUserInput
   settlementPaid?: Prisma.SettlementUncheckedCreateNestedManyWithoutPaidByInput
@@ -516,6 +544,7 @@ export type UserUpdateToOneWithWhereWithoutExpensesInput = {
 export type UserUpdateWithoutExpensesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
   groups?: Prisma.GroupMemberUpdateManyWithoutUserNestedInput
   splits?: Prisma.ExpenseSplitUpdateManyWithoutUserNestedInput
   settlementPaid?: Prisma.SettlementUpdateManyWithoutPaidByNestedInput
@@ -526,6 +555,7 @@ export type UserUncheckedUpdateWithoutExpensesInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
   groups?: Prisma.GroupMemberUncheckedUpdateManyWithoutUserNestedInput
   splits?: Prisma.ExpenseSplitUncheckedUpdateManyWithoutUserNestedInput
   settlementPaid?: Prisma.SettlementUncheckedUpdateManyWithoutPaidByNestedInput
@@ -535,6 +565,7 @@ export type UserUncheckedUpdateWithoutExpensesInput = {
 export type UserCreateWithoutSplitsInput = {
   name: string
   email: string
+  password?: string
   groups?: Prisma.GroupMemberCreateNestedManyWithoutUserInput
   expenses?: Prisma.ExpenseCreateNestedManyWithoutPaidByInput
   settlementPaid?: Prisma.SettlementCreateNestedManyWithoutPaidByInput
@@ -545,6 +576,7 @@ export type UserUncheckedCreateWithoutSplitsInput = {
   id?: number
   name: string
   email: string
+  password?: string
   groups?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutUserInput
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutPaidByInput
   settlementPaid?: Prisma.SettlementUncheckedCreateNestedManyWithoutPaidByInput
@@ -570,6 +602,7 @@ export type UserUpdateToOneWithWhereWithoutSplitsInput = {
 export type UserUpdateWithoutSplitsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
   groups?: Prisma.GroupMemberUpdateManyWithoutUserNestedInput
   expenses?: Prisma.ExpenseUpdateManyWithoutPaidByNestedInput
   settlementPaid?: Prisma.SettlementUpdateManyWithoutPaidByNestedInput
@@ -580,6 +613,7 @@ export type UserUncheckedUpdateWithoutSplitsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
   groups?: Prisma.GroupMemberUncheckedUpdateManyWithoutUserNestedInput
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutPaidByNestedInput
   settlementPaid?: Prisma.SettlementUncheckedUpdateManyWithoutPaidByNestedInput
@@ -589,6 +623,7 @@ export type UserUncheckedUpdateWithoutSplitsInput = {
 export type UserCreateWithoutSettlementPaidInput = {
   name: string
   email: string
+  password?: string
   groups?: Prisma.GroupMemberCreateNestedManyWithoutUserInput
   expenses?: Prisma.ExpenseCreateNestedManyWithoutPaidByInput
   splits?: Prisma.ExpenseSplitCreateNestedManyWithoutUserInput
@@ -599,6 +634,7 @@ export type UserUncheckedCreateWithoutSettlementPaidInput = {
   id?: number
   name: string
   email: string
+  password?: string
   groups?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutUserInput
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutPaidByInput
   splits?: Prisma.ExpenseSplitUncheckedCreateNestedManyWithoutUserInput
@@ -613,6 +649,7 @@ export type UserCreateOrConnectWithoutSettlementPaidInput = {
 export type UserCreateWithoutSettlementReceivedInput = {
   name: string
   email: string
+  password?: string
   groups?: Prisma.GroupMemberCreateNestedManyWithoutUserInput
   expenses?: Prisma.ExpenseCreateNestedManyWithoutPaidByInput
   splits?: Prisma.ExpenseSplitCreateNestedManyWithoutUserInput
@@ -623,6 +660,7 @@ export type UserUncheckedCreateWithoutSettlementReceivedInput = {
   id?: number
   name: string
   email: string
+  password?: string
   groups?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutUserInput
   expenses?: Prisma.ExpenseUncheckedCreateNestedManyWithoutPaidByInput
   splits?: Prisma.ExpenseSplitUncheckedCreateNestedManyWithoutUserInput
@@ -648,6 +686,7 @@ export type UserUpdateToOneWithWhereWithoutSettlementPaidInput = {
 export type UserUpdateWithoutSettlementPaidInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
   groups?: Prisma.GroupMemberUpdateManyWithoutUserNestedInput
   expenses?: Prisma.ExpenseUpdateManyWithoutPaidByNestedInput
   splits?: Prisma.ExpenseSplitUpdateManyWithoutUserNestedInput
@@ -658,6 +697,7 @@ export type UserUncheckedUpdateWithoutSettlementPaidInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
   groups?: Prisma.GroupMemberUncheckedUpdateManyWithoutUserNestedInput
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutPaidByNestedInput
   splits?: Prisma.ExpenseSplitUncheckedUpdateManyWithoutUserNestedInput
@@ -678,6 +718,7 @@ export type UserUpdateToOneWithWhereWithoutSettlementReceivedInput = {
 export type UserUpdateWithoutSettlementReceivedInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
   groups?: Prisma.GroupMemberUpdateManyWithoutUserNestedInput
   expenses?: Prisma.ExpenseUpdateManyWithoutPaidByNestedInput
   splits?: Prisma.ExpenseSplitUpdateManyWithoutUserNestedInput
@@ -688,6 +729,7 @@ export type UserUncheckedUpdateWithoutSettlementReceivedInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
   groups?: Prisma.GroupMemberUncheckedUpdateManyWithoutUserNestedInput
   expenses?: Prisma.ExpenseUncheckedUpdateManyWithoutPaidByNestedInput
   splits?: Prisma.ExpenseSplitUncheckedUpdateManyWithoutUserNestedInput
@@ -765,6 +807,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   id?: boolean
   name?: boolean
   email?: boolean
+  password?: boolean
   groups?: boolean | Prisma.User$groupsArgs<ExtArgs>
   expenses?: boolean | Prisma.User$expensesArgs<ExtArgs>
   splits?: boolean | Prisma.User$splitsArgs<ExtArgs>
@@ -777,21 +820,24 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   id?: boolean
   name?: boolean
   email?: boolean
+  password?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
   email?: boolean
+  password?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
   id?: boolean
   name?: boolean
   email?: boolean
+  password?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "password", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   groups?: boolean | Prisma.User$groupsArgs<ExtArgs>
   expenses?: boolean | Prisma.User$expensesArgs<ExtArgs>
@@ -816,6 +862,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     id: number
     name: string
     email: string
+    password: string
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -1247,6 +1294,7 @@ export interface UserFieldRefs {
   readonly id: Prisma.FieldRef<"User", 'Int'>
   readonly name: Prisma.FieldRef<"User", 'String'>
   readonly email: Prisma.FieldRef<"User", 'String'>
+  readonly password: Prisma.FieldRef<"User", 'String'>
 }
     
 
