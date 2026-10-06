@@ -126,9 +126,12 @@ export default function Dashboard() {
                 <div className="text-[12px] text-[#6B7268] font-['Inter']">
                   {element.oweOrOwed === "owe" ? "You owe" : "You are owed"}
                 </div>
-                <div className="text-[15px] font-medium text-[#9C3D54] font-['Inter']">
+                {element.oweOrOwed==="owe" && <div className="text-[15px] font-medium text-[#9C3D54] font-['Inter']">
                   ₹{element.amount}
-                </div>
+                </div>}
+                {element.oweOrOwed==="owed" && <div className="text-[15px] font-medium text-[#2F6F5E] font-['Inter']">
+                  ₹{element.amount}
+                </div>}
               </div>
             </div>
                 )
